@@ -5,13 +5,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+
+import java.util.ArrayList;
 
 
 public class EndersortEntity extends ChestTileEntity {
 
     private int transferCooldown = -1;
+    private ArrayList<BlockPos> containerPositions = new ArrayList<>();
 
     public EndersortEntity() {
     }
@@ -24,10 +28,10 @@ public class EndersortEntity extends ChestTileEntity {
     @Override
     public void tick() {
 //        if (this.world != null && !this.world.isRemote) {
-            --this.transferCooldown;
-            if (!this.isOnTransferCooldown()) {
-                filterItems();
-            }
+        --this.transferCooldown;
+        if (!this.isOnTransferCooldown()) {
+            distributeItems();
+        }
 //        }
     }
 
@@ -36,7 +40,11 @@ public class EndersortEntity extends ChestTileEntity {
         return new StringTextComponent("Endersort");
     }
 
-    private void filterItems() {
+    private void findContainers() {
+
+    }
+
+    private void distributeItems() {
         pushItems();
     }
 
@@ -50,28 +58,6 @@ public class EndersortEntity extends ChestTileEntity {
 //                }
 //            }
 //        }
-    }
-
-    private void attemptToPull(ItemStack item, IInventory sourceInventory) {
-        if (!item.isEmpty() && item.isStackable()) {
-            int desiredItemCount = item.getMaxStackSize() - item.getCount();
-            if (desiredItemCount > 0) {
-                ResourceLocation matchName = item.getItem().getRegistryName();
-                //Transfer first stack that matches this item
-                for (int i = 0; i < sourceInventory.getContainerSize(); i++) {
-                    ItemStack sourceItem = sourceInventory.getItem(i);
-                    if (!sourceItem.isEmpty() && matchName.equals(sourceItem.getItem().getRegistryName())) {
-                        int itemCount = Math.min(desiredItemCount, sourceItem.getCount());
-                        item.setCount(item.getCount() + itemCount);
-                        sourceItem.setCount(sourceItem.getCount() - itemCount);
-                        if (sourceItem.isEmpty()) {
-                            sourceInventory.setChanged();
-                        }
-                        break;
-                    }
-                }
-            }
-        }
     }
 
     private void attemptToPush(ItemStack item, IInventory destinationInventory) {
