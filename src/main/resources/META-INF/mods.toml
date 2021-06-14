@@ -1,0 +1,21 @@
+modLoader="javafml"
+loaderVersion="[26,)"
+license="Creative Commons Attribution-NonCommercial-NoDerivatives 4.0"
+issueTrackerURL="https://github.com/ManApart/item-filters/issues"
+
+[[mods]]
+    modId="endersorts"
+    version="1.0"
+    displayName="Endersorts"
+	authors="ManApart"
+    description='''
+    Deposit items and have them sorted to nearby chests
+    '''
+    credits="Sort your items"
+
+[[dependencies.item_filters]]
+    modId="forge"
+    mandatory=true
+    versionRange="[35.1.10,)"
+    ordering="NONE"
+    side="BOTH"
