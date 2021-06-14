@@ -4,7 +4,7 @@ license="Creative Commons Attribution-NonCommercial-NoDerivatives 4.0"
 issueTrackerURL="https://github.com/ManApart/item-filters/issues"
 
 [[mods]]
-    modId="endersorts"
+    modId="endersort"
     version="1.0"
     displayName="Endersorts"
 	authors="ManApart"

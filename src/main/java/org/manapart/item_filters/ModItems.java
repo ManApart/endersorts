@@ -6,16 +6,16 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import static org.manapart.item_filters.ItemFilters.*;
+import static org.manapart.item_filters.Endersort.*;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModItems {
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event) {
-        if (!ForgeRegistries.ITEMS.containsKey(itemFilterItem.getRegistryName())) {
-            ForgeRegistries.ITEMS.register(itemFilterItem);
-            ForgeRegistries.ITEMS.register(itemFiltersIcon);
+        if (!ForgeRegistries.ITEMS.containsKey(ENDERSORT_ITEM.getRegistryName())) {
+            ForgeRegistries.ITEMS.register(ENDERSORT_ITEM);
+            ForgeRegistries.ITEMS.register(endersortIcon);
         }
     }
 }

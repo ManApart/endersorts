@@ -4,7 +4,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 
 public class ItemGroupIF extends ItemGroup {
-    public static final ItemGroupIF instance = new ItemGroupIF(ItemGroup.getGroupCountSafe(), "item_filters");
+    public static final ItemGroupIF instance = new ItemGroupIF(ItemGroup.getGroupCountSafe(), "endersort");
 
     private ItemGroupIF(int index, String label) {
         super(index, label);
@@ -12,7 +12,7 @@ public class ItemGroupIF extends ItemGroup {
 
     @Override
     public ItemStack makeIcon() {
-        return new ItemStack(ItemFilters.itemFiltersIcon);
+        return new ItemStack(Endersort.endersortIcon);
     }
 
 }

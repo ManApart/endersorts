@@ -6,15 +6,15 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import static org.manapart.item_filters.ItemFilters.itemFilterBlock;
+import static org.manapart.item_filters.Endersort.ENDERSORT_BLOCK;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModBlocks {
 
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
-        if (!ForgeRegistries.BLOCKS.containsKey(itemFilterBlock.getRegistryName())) {
-            ForgeRegistries.BLOCKS.register(itemFilterBlock);
+        if (!ForgeRegistries.BLOCKS.containsKey(ENDERSORT_BLOCK.getRegistryName())) {
+            ForgeRegistries.BLOCKS.register(ENDERSORT_BLOCK);
         }
     }
 }
