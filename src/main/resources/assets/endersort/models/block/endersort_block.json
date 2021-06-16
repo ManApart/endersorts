@@ -1,6 +1,12 @@
 {
-  "parent": "block/cube_all",
+  "parent": "block/cube",
   "textures": {
-    "all": "block/hopper_inside"
+    "particle": "endersort:block/endersort_top",
+    "down": "endersort:block/endersort_bottom",
+    "up": "endersort:block/endersort_top",
+    "north": "endersort:block/endersort_side",
+    "east": "endersort:block/endersort_side",
+    "south": "endersort:block/endersort_side",
+    "west": "endersort:block/endersort_side"
   }
 }

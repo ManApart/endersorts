@@ -18,23 +18,11 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 
-public class EndersortBlock extends Block{
-//public class EndersortBlock extends ChestBlock {
+public class EndersortBlock extends ChestBlock {
 
     public EndersortBlock() {
-        super(createProps());
+        super(createProps(), () -> null);
     }
-//    public EndersortBlock() {
-//        super(createProps(), () -> {
-////            return TileEntityType.Builder.of(ChestTileEntity::new, Blocks.CHEST).build(ChestTileEntity.class);
-////            return TileEntityType.CHEST;
-////            return Registry.register(Registry.BLOCK_ENTITY_TYPE, "endersort", TileEntityType.Builder.of(ChestTileEntity::new, Blocks.CHEST));
-////            return new EndersortEntity(false);
-//            return null;
-//        });
-//    }
-
-//    public static final TileEntityType<ChestTileEntity> CHEST = register("chest", TileEntityType.Builder.of(ChestTileEntity::new, Blocks.CHEST));
 
     private static AbstractBlock.Properties createProps() {
         Material padMat = new Material.Builder(MaterialColor.COLOR_BLUE).build();
@@ -73,6 +61,11 @@ public class EndersortBlock extends Block{
 
             super.onRemove(state, world, pos, newState, isMoving);
         }
+    }
+
+    @Override
+    public BlockRenderType getRenderShape(BlockState p_149645_1_) {
+        return BlockRenderType.MODEL;
     }
 
 }
