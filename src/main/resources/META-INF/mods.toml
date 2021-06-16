@@ -13,7 +13,7 @@ issueTrackerURL="https://github.com/ManApart/item-filters/issues"
     '''
     credits="Sort your items"
 
-[[dependencies.item_filters]]
+[[dependencies.endersort]]
     modId="forge"
     mandatory=true
     versionRange="[35.1.10,)"
