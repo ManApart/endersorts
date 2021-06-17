@@ -8,6 +8,7 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.stats.Stats;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityMerger;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
@@ -46,6 +47,7 @@ public class EndersortBlock extends ChestBlock {
             if (tileentity instanceof EndersortEntity) {
                 player.openMenu((EndersortEntity) tileentity);
                 player.awardStat(Stats.INSPECT_HOPPER);
+                ((EndersortEntity) tileentity).clearContainers();
             }
         }
         return ActionResultType.PASS;
@@ -66,6 +68,12 @@ public class EndersortBlock extends ChestBlock {
     @Override
     public BlockRenderType getRenderShape(BlockState p_149645_1_) {
         return BlockRenderType.MODEL;
+    }
+
+    //Chest combine was throwing a null pointer. This hopefully tells the combiner that these chests are always just 1, no double chests
+    @Override
+    public TileEntityMerger.ICallbackWrapper<? extends ChestTileEntity> combine(BlockState p_225536_1_, World world, BlockPos pos, boolean p_225536_4_) {
+        return new TileEntityMerger.ICallbackWrapper.Single(world.getBlockEntity(pos));
     }
 
 }
