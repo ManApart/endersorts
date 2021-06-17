@@ -15,6 +15,7 @@ public class ModItems {
     public static void registerItems(RegistryEvent.Register<Item> event) {
         if (!ForgeRegistries.ITEMS.containsKey(ENDERSORT_ITEM.getRegistryName())) {
             ForgeRegistries.ITEMS.register(ENDERSORT_ITEM);
+            ForgeRegistries.ITEMS.register(ENDER_EXTENDER_ITEM);
             ForgeRegistries.ITEMS.register(endersortIcon);
         }
     }

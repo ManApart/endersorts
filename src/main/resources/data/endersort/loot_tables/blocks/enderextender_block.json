@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "endersort:endersort_item"
+          "name": "endersort:ender_extender_item"
         }
       ],
       "conditions": [

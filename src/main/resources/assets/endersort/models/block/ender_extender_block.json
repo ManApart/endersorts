@@ -1,0 +1,7 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "particle": "endersort:block/endersort_top",
+    "all": "endersort:block/ender_extender"
+  }
+}

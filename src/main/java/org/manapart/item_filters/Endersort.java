@@ -13,6 +13,8 @@ public class Endersort {
     public static final String MODID = "endersort";
     public static final EndersortBlock ENDERSORT_BLOCK = createBlock();
     public static final EndersortItem ENDERSORT_ITEM = createItem(ENDERSORT_BLOCK);
+    public static final EnderExtenderBlock ENDER_EXTENDER_BLOCK = createExtenderBlock();
+    public static final EnderExtenderItem ENDER_EXTENDER_ITEM = createExtenderItem(ENDER_EXTENDER_BLOCK);
     public static final TileEntityType<EndersortEntity> tileType = createEntityType(ENDERSORT_BLOCK);
     public static Item endersortIcon = createIcon();
 
@@ -35,6 +37,18 @@ public class Endersort {
     private static EndersortItem createItem(EndersortBlock block) {
         EndersortItem filter = new EndersortItem(block);
         filter.setRegistryName(new ResourceLocation(MODID + ":endersort_item"));
+        return filter;
+    }
+
+    private static EnderExtenderBlock createExtenderBlock() {
+        EnderExtenderBlock filter = new EnderExtenderBlock();
+        filter.setRegistryName(new ResourceLocation(MODID + ":ender_extender_block"));
+        return filter;
+    }
+
+    private static EnderExtenderItem createExtenderItem(EnderExtenderBlock block) {
+        EnderExtenderItem filter = new EnderExtenderItem(block);
+        filter.setRegistryName(new ResourceLocation(MODID + ":ender_extender_item"));
         return filter;
     }
 

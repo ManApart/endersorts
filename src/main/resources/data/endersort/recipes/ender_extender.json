@@ -13,5 +13,7 @@
       "item": "minecraft:obsidian"
     }
   },
-  "result": {}
+  "result": {
+    "item": "endersort:ender_extender_item"
+  }
 }

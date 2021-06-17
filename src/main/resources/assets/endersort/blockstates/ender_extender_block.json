@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "endersort:block/ender_extender_block"
+    }
+  }
+}

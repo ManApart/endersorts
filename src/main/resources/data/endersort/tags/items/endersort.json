@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
+    "endersort:ender_extender_item",
     "endersort:endersort_item"
   ]
 }
