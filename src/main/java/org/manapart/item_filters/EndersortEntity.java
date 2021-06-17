@@ -65,7 +65,7 @@ public class EndersortEntity extends ChestTileEntity {
                     BlockPos pos = new BlockPos(x, y, z);
                     IInventory inventory = HopperTileEntity.getContainerAt(this.getLevel(), pos);
                     if (inventory instanceof ChestTileEntity && !(inventory instanceof EndersortEntity)) {
-                        System.out.println("Found Chest at " + pos.toShortString());
+//                        System.out.println("Found Chest at " + pos.toShortString());
                         positions.add(pos);
                     }
                 }
@@ -81,7 +81,7 @@ public class EndersortEntity extends ChestTileEntity {
         if (containerIndex >= containerPositions.size()) {
             containerIndex = 0;
         }
-        System.out.println("Distributing Items to " + containerIndex);
+//        System.out.println("Distributing Items to " + containerIndex);
         IInventory chest = HopperTileEntity.getContainerAt(this.getLevel(), containerPositions.get(containerIndex));
         if (chest instanceof ChestTileEntity) {
             pushItems(chest);
@@ -111,20 +111,22 @@ public class EndersortEntity extends ChestTileEntity {
     private void attemptToPush(ItemStack item, IInventory destinationInventory, Set<ResourceLocation> matches) {
         ResourceLocation matchName = item.getItem().getRegistryName();
         if (!item.isEmpty() && matches.contains(matchName)) {
+            //Try to combine stacks first, then try full items
+            pushStackable(item, destinationInventory, matchName);
+            if (!item.isEmpty()) {
+                pushNewStack(item, destinationInventory, matches, matchName);
+            }
+        }
+    }
+
+    private void pushStackable(ItemStack item, IInventory destinationInventory, ResourceLocation matchName) {
+        if (item.isStackable()) {
             for (int i = 0; i < destinationInventory.getContainerSize(); i++) {
                 ItemStack destItem = destinationInventory.getItem(i);
-                if (destItem.isEmpty() || (item.isStackable() && destItem.isStackable() && matchName.equals(destItem.getItem().getRegistryName()))) {
+                if (destItem.isStackable() && matchName.equals(destItem.getItem().getRegistryName())) {
                     int itemCount = Math.min(destItem.getMaxStackSize() - destItem.getCount(), item.getCount());
                     if (itemCount > 0) {
-                        if (destItem.isEmpty()) {
-                            destinationInventory.setItem(i, item.copy());
-                            destItem = destinationInventory.getItem(i);
-                            destItem.setCount(itemCount);
-                            setChanged();
-                        } else {
-                            destItem.setCount(destItem.getCount() + itemCount);
-                        }
-
+                        destItem.setCount(destItem.getCount() + itemCount);
                         item.setCount(item.getCount() - itemCount);
                         if (destItem.isEmpty()) {
                             destinationInventory.setChanged();
@@ -136,5 +138,24 @@ public class EndersortEntity extends ChestTileEntity {
         }
     }
 
+    private void pushNewStack(ItemStack item, IInventory destinationInventory, Set<ResourceLocation> matches, ResourceLocation matchName) {
+        for (int i = 0; i < destinationInventory.getContainerSize(); i++) {
+            ItemStack destItem = destinationInventory.getItem(i);
+            if (destItem.isEmpty()) {
+                int itemCount = Math.min(destItem.getMaxStackSize() - destItem.getCount(), item.getCount());
+                if (itemCount > 0) {
+                    destinationInventory.setItem(i, item.copy());
+                    destItem = destinationInventory.getItem(i);
+                    destItem.setCount(itemCount);
+                    setChanged();
+                    item.setCount(item.getCount() - itemCount);
+                    if (destItem.isEmpty()) {
+                        destinationInventory.setChanged();
+                    }
+                    break;
+                }
+            }
+        }
+    }
 
 }
