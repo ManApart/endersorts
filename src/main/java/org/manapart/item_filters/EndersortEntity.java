@@ -6,22 +6,18 @@ import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.HopperTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 
 public class EndersortEntity extends ChestTileEntity {
-
     private int transferCooldown = -1;
     private int cooldownBuffer = 20;
-    private ArrayList<BlockPos> containerPositions = new ArrayList<>();
+    private ChestFinder chestFinder = new ChestFinder();
     private int containerIndex = -1;
-    private int radius = 5;
 
     public EndersortEntity() {
     }
@@ -36,10 +32,12 @@ public class EndersortEntity extends ChestTileEntity {
         --this.transferCooldown;
         if (this.transferCooldown <= 0 && !this.isEmpty()) {
             this.transferCooldown = cooldownBuffer;
-            if (containerPositions.isEmpty()) {
-                findContainers();
-            } else {
+            if (chestFinder.isSearching()) {
+                chestFinder.findContainers(this.getLevel(), this.worldPosition);
+            } else if (chestFinder.hasContainers()) {
                 distributeItems();
+            } else {
+                chestFinder.resetSearch(worldPosition);
             }
         }
     }
@@ -50,39 +48,17 @@ public class EndersortEntity extends ChestTileEntity {
     }
 
     public void clearContainers() {
-        this.containerPositions.clear();
+        this.chestFinder.resetSearch(worldPosition);
         this.containerIndex = -1;
-    }
-
-    private void findContainers() {
-        int sourceX = this.worldPosition.getX();
-        int sourceY = this.worldPosition.getY();
-        int sourceZ = this.worldPosition.getZ();
-        Set<BlockPos> positions = new HashSet<>();
-        for (int x = sourceX - radius; x < sourceX + radius; x++) {
-            for (int y = sourceY - radius; y < sourceY + radius; y++) {
-                for (int z = sourceZ - radius; z < sourceZ + radius; z++) {
-                    BlockPos pos = new BlockPos(x, y, z);
-                    IInventory inventory = HopperTileEntity.getContainerAt(this.getLevel(), pos);
-                    if (inventory instanceof ChestTileEntity && !(inventory instanceof EndersortEntity)) {
-//                        System.out.println("Found Chest at " + pos.toShortString());
-                        positions.add(pos);
-                    }
-                }
-            }
-        }
-        //TODO - if detect an extender, expand radius, but don't look twice at same position
-        this.containerPositions = new ArrayList<>(positions);
-        System.out.println("Found " + this.containerPositions.size() + " containers");
     }
 
     private void distributeItems() {
         containerIndex++;
-        if (containerIndex >= containerPositions.size()) {
+        if (containerIndex >= chestFinder.getContainerPositions().size()) {
             containerIndex = 0;
         }
 //        System.out.println("Distributing Items to " + containerIndex);
-        IInventory chest = HopperTileEntity.getContainerAt(this.getLevel(), containerPositions.get(containerIndex));
+        IInventory chest = HopperTileEntity.getContainerAt(this.getLevel(), chestFinder.getContainerPositions().get(containerIndex));
         if (chest instanceof ChestTileEntity) {
             pushItems(chest);
         } else {
