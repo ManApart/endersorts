@@ -1,7 +1,10 @@
 package org.manapart.item_filters;
 
+import net.minecraft.client.particle.FireworkParticle;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particles.BasicParticleType;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.HopperTileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -11,6 +14,7 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.server.ServerWorld;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -69,9 +73,10 @@ public class EndersortEntity extends ChestTileEntity {
         } else {
             clearContainers();
         }
-        if (distributedItems){
+        if (distributedItems) {
             distributedItems = false;
-            getLevel().playSound(null, worldPosition, SoundEvents.ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f );
+            getLevel().playSound(null, worldPosition, SoundEvents.ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f);
+//            getLevel().addParticle(ParticleTypes.EXPLOSION, worldPosition.getX(),worldPosition.getY()+1,worldPosition.getZ(),0,1,0);
         }
 
     }
