@@ -57,15 +57,13 @@ public class ChestFinder {
         int sourceY = source.getY();
         int sourceZ = source.getZ();
         Set<BlockPos> positions = new HashSet<>();
-        for (int x = sourceX - radius; x < sourceX + radius; x++) {
-            for (int y = sourceY - radius; y < sourceY + radius; y++) {
-                for (int z = sourceZ - radius; z < sourceZ + radius; z++) {
+        for (int x = sourceX - radius; x <= sourceX + radius; x++) {
+            for (int y = sourceY - radius; y <= sourceY + radius; y++) {
+                for (int z = sourceZ - radius; z <= sourceZ + radius; z++) {
                     BlockPos pos = new BlockPos(x, y, z);
                     if (!searchedPositions.contains(pos)) {
                         searchedPositions.add(pos);
                         Block block = world.getBlockState(pos).getBlock();
-                        //Find exact location with f3, lookup what block instance is
-                        //Maybe radius 1 to low?
                         if (block instanceof EnderExtenderBlock) {
                             searchStarts.add(pos);
                         } else if (block instanceof ChestBlock) {

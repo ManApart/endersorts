@@ -12,3 +12,10 @@ Range of 5 blocks in any direction
 
 Extends the range that an Endersort will look for chests to store items in.
 Range of 5 blocks in any direction
+
+
+## TODO
+
+make sound on item move
+add crafting recipe pictures
+particle on picked chest

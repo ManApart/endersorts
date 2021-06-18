@@ -6,6 +6,9 @@ import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.HopperTileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
@@ -18,6 +21,7 @@ public class EndersortEntity extends ChestTileEntity {
     private int cooldownBuffer = 20;
     private ChestFinder chestFinder = new ChestFinder();
     private int containerIndex = -1;
+    private boolean distributedItems = false;
 
     public EndersortEntity() {
     }
@@ -58,12 +62,18 @@ public class EndersortEntity extends ChestTileEntity {
             containerIndex = 0;
         }
 //        System.out.println("Distributing Items to " + containerIndex);
-        IInventory chest = HopperTileEntity.getContainerAt(this.getLevel(), chestFinder.getContainerPositions().get(containerIndex));
+        BlockPos nextPos = chestFinder.getContainerPositions().get(containerIndex);
+        IInventory chest = HopperTileEntity.getContainerAt(this.getLevel(), nextPos);
         if (chest instanceof ChestTileEntity) {
             pushItems(chest);
         } else {
             clearContainers();
         }
+        if (distributedItems){
+            distributedItems = false;
+            getLevel().playSound(null, worldPosition, SoundEvents.ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f );
+        }
+
     }
 
     private void pushItems(IInventory chest) {
@@ -107,6 +117,7 @@ public class EndersortEntity extends ChestTileEntity {
                         if (destItem.isEmpty()) {
                             destinationInventory.setChanged();
                         }
+                        distributedItems = true;
                         break;
                     }
                 }
@@ -128,6 +139,7 @@ public class EndersortEntity extends ChestTileEntity {
                     if (destItem.isEmpty()) {
                         destinationInventory.setChanged();
                     }
+                    distributedItems = true;
                     break;
                 }
             }
