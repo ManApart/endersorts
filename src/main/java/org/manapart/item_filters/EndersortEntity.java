@@ -105,9 +105,9 @@ public class EndersortEntity extends ChestTileEntity {
                 pushNewStack(item, destinationInventory);
             }
 
-            if (item.isEmpty()) {
-                System.out.println("Distributed " + matchName + " to " + pos.toShortString());
-            }
+//            if (item.isEmpty()) {
+//                System.out.println("Distributed " + matchName + " to " + pos.toShortString());
+//            }
         }
     }
 

@@ -21,8 +21,6 @@ public class ChestFinder {
     private final ArrayList<BlockPos> containerPositions = new ArrayList<>();
     //Don't search these positions again
     private final Set<BlockPos> searchedPositions = new HashSet<>();
-    //Don't add these (double chest) inventories a second time
-    private final Set<IInventory> searchedInventories = new HashSet<>();
     private final ArrayList<BlockPos> searchStarts = new ArrayList<>();
 
     public List<BlockPos> getContainerPositions() {
@@ -32,7 +30,6 @@ public class ChestFinder {
     public void resetSearch(BlockPos initialSource) {
         this.containerPositions.clear();
         this.searchedPositions.clear();
-        this.searchedInventories.clear();
         this.searchStarts.clear();
         if (initialSource != null) {
             this.searchStarts.add(initialSource);
@@ -60,7 +57,6 @@ public class ChestFinder {
         if (searchStarts.isEmpty()) {
             //Don't keep holding onto all these positions
             searchedPositions.clear();
-            searchedInventories.clear();
         }
     }
 
@@ -73,36 +69,39 @@ public class ChestFinder {
             for (int y = sourceY - radius; y <= sourceY + radius; y++) {
                 for (int z = sourceZ - radius; z <= sourceZ + radius; z++) {
                     BlockPos pos = new BlockPos(x, y, z);
-                    if (!searchedPositions.contains(pos)) {
-                        searchedPositions.add(pos);
-                        Block block = world.getBlockState(pos).getBlock();
-                        if (block instanceof EnderExtenderBlock) {
-                            searchStarts.add(pos);
-                        } else if (block instanceof ChestBlock) {
-                            IInventory inventory = HopperTileEntity.getContainerAt(world, pos);
-                            if ((inventory instanceof ChestTileEntity || inventory instanceof DoubleSidedInventory) && !(inventory instanceof EndersortEntity)) {
-//                        System.out.println("Found Chest at " + pos.toShortString());
-                                //Dedupe the two sided inventories
-                                if (inventory instanceof DoubleSidedInventory) {
-                                    Direction neighborDirection = ChestBlock.getConnectedDirection(world.getBlockState(pos));
-                                    BlockPos neighborPos = pos.offset(neighborDirection.getNormal());
-                                    if (!searchedInventories.contains(inventory) && !searchedPositions.contains(neighborPos)){
-                                        positions.add(pos);
-                                        searchedInventories.add(inventory);
-                                        searchedPositions.add(neighborPos);
-                                    }
-                                } else if (!searchedInventories.contains(inventory)) {
-                                    positions.add(pos);
-                                    searchedInventories.add(inventory);
-                                }
-                            }
-                        }
+                    if (validContainerExistsHere(world, pos)) {
+                        positions.add(pos);
                     }
                 }
             }
         }
         this.containerPositions.addAll(positions);
         System.out.println("Found " + positions.size() + " containers");
+    }
+
+    private boolean validContainerExistsHere(World world, BlockPos pos) {
+        if (!searchedPositions.contains(pos)) {
+            searchedPositions.add(pos);
+            Block block = world.getBlockState(pos).getBlock();
+            if (block instanceof EnderExtenderBlock) {
+                searchStarts.add(pos);
+            } else if (block instanceof ChestBlock) {
+                IInventory inventory = HopperTileEntity.getContainerAt(world, pos);
+                if (!(inventory instanceof EndersortEntity)) {
+                    if (inventory instanceof ChestTileEntity) {
+                        return true;
+                    } else if(inventory instanceof DoubleSidedInventory){
+                        Direction neighborDirection = ChestBlock.getConnectedDirection(world.getBlockState(pos));
+                        BlockPos neighborPos = pos.offset(neighborDirection.getNormal());
+                        if (!searchedPositions.contains(neighborPos)) {
+                            searchedPositions.add(neighborPos);
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
     }
 
 }
