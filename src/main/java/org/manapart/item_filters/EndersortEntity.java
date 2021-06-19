@@ -1,10 +1,8 @@
 package org.manapart.item_filters;
 
-import net.minecraft.client.particle.FireworkParticle;
+import net.minecraft.inventory.DoubleSidedInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.particles.BasicParticleType;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.HopperTileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -14,7 +12,6 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.server.ServerWorld;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -66,19 +63,16 @@ public class EndersortEntity extends ChestTileEntity {
             containerIndex = 0;
         }
 //        System.out.println("Distributing Items to " + containerIndex);
-        BlockPos nextPos = chestFinder.getContainerPositions().get(containerIndex);
-        IInventory chest = HopperTileEntity.getContainerAt(this.getLevel(), nextPos);
-        if (chest instanceof ChestTileEntity) {
+        BlockPos pos = chestFinder.getContainerPositions().get(containerIndex);
+        IInventory chest = HopperTileEntity.getContainerAt(this.getLevel(), pos);
+        if (chest instanceof ChestTileEntity || chest instanceof DoubleSidedInventory) {
             pushItems(chest);
         } else {
             clearContainers();
         }
         if (distributedItems) {
-            distributedItems = false;
-            getLevel().playSound(null, worldPosition, SoundEvents.ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f);
-//            getLevel().addParticle(ParticleTypes.EXPLOSION, worldPosition.getX(),worldPosition.getY()+1,worldPosition.getZ(),0,1,0);
+            getLevel().playSound(null, pos, SoundEvents.ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f);
         }
-
     }
 
     private void pushItems(IInventory chest) {

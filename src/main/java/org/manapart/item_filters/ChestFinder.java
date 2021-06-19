@@ -2,6 +2,7 @@ package org.manapart.item_filters;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.ChestBlock;
+import net.minecraft.inventory.DoubleSidedInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.HopperTileEntity;
@@ -50,6 +51,11 @@ public class ChestFinder {
             searchStarts.remove(source);
             findContainersInRadius(world, source);
         }
+        //We have found every chest we're going to find
+        if (searchStarts.isEmpty()) {
+            //Don't keep holding onto all these positions
+            searchedPositions.clear();
+        }
     }
 
     private void findContainersInRadius(World world, BlockPos source) {
@@ -68,7 +74,7 @@ public class ChestFinder {
                             searchStarts.add(pos);
                         } else if (block instanceof ChestBlock) {
                             IInventory inventory = HopperTileEntity.getContainerAt(world, pos);
-                            if (inventory instanceof ChestTileEntity && !(inventory instanceof EndersortEntity)) {
+                            if ((inventory instanceof ChestTileEntity || inventory instanceof DoubleSidedInventory) && !(inventory instanceof EndersortEntity)) {
 //                        System.out.println("Found Chest at " + pos.toShortString());
                                 positions.add(pos);
                             }
