@@ -19,7 +19,7 @@ import java.util.Set;
 
 public class EndersortEntity extends ChestTileEntity {
     private int transferCooldown = -1;
-    private int cooldownBuffer = 20;
+    private int cooldownBuffer = 5;
     private ChestFinder chestFinder = new ChestFinder();
     private int containerIndex = -1;
     private boolean distributedItems = false;
@@ -66,19 +66,22 @@ public class EndersortEntity extends ChestTileEntity {
         BlockPos pos = chestFinder.getContainerPositions().get(containerIndex);
         IInventory chest = HopperTileEntity.getContainerAt(this.getLevel(), pos);
         if (chest instanceof ChestTileEntity || chest instanceof DoubleSidedInventory) {
-            pushItems(chest);
+            pushItems(chest, pos);
         } else {
             clearContainers();
         }
         if (distributedItems) {
+            distributedItems = false;
             getLevel().playSound(null, pos, SoundEvents.ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f);
         }
     }
 
-    private void pushItems(IInventory chest) {
-        Set<ResourceLocation> matches = buildMatchMap(chest);
-        for (ItemStack item : this.getItems()) {
-            attemptToPush(item, chest, matches);
+    private void pushItems(IInventory chest, BlockPos pos) {
+        if (!chest.isEmpty()) {
+            Set<ResourceLocation> matches = buildMatchMap(chest);
+            for (ItemStack item : this.getItems()) {
+                attemptToPush(item, chest, matches, pos);
+            }
         }
     }
 
@@ -93,13 +96,17 @@ public class EndersortEntity extends ChestTileEntity {
         return matches;
     }
 
-    private void attemptToPush(ItemStack item, IInventory destinationInventory, Set<ResourceLocation> matches) {
+    private void attemptToPush(ItemStack item, IInventory destinationInventory, Set<ResourceLocation> matches, BlockPos pos) {
         ResourceLocation matchName = item.getItem().getRegistryName();
         if (!item.isEmpty() && matches.contains(matchName)) {
             //Try to combine stacks first, then try full items
             pushStackable(item, destinationInventory, matchName);
             if (!item.isEmpty()) {
-                pushNewStack(item, destinationInventory, matches, matchName);
+                pushNewStack(item, destinationInventory);
+            }
+
+            if (item.isEmpty()) {
+                System.out.println("Distributed " + matchName + " to " + pos.toShortString());
             }
         }
     }
@@ -124,7 +131,7 @@ public class EndersortEntity extends ChestTileEntity {
         }
     }
 
-    private void pushNewStack(ItemStack item, IInventory destinationInventory, Set<ResourceLocation> matches, ResourceLocation matchName) {
+    private void pushNewStack(ItemStack item, IInventory destinationInventory) {
         for (int i = 0; i < destinationInventory.getContainerSize(); i++) {
             ItemStack destItem = destinationInventory.getItem(i);
             if (destItem.isEmpty()) {

@@ -6,6 +6,7 @@ import net.minecraft.inventory.DoubleSidedInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.ChestTileEntity;
 import net.minecraft.tileentity.HopperTileEntity;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -18,7 +19,10 @@ public class ChestFinder {
     private final int radius = 5;
 
     private final ArrayList<BlockPos> containerPositions = new ArrayList<>();
+    //Don't search these positions again
     private final Set<BlockPos> searchedPositions = new HashSet<>();
+    //Don't add these (double chest) inventories a second time
+    private final Set<IInventory> searchedInventories = new HashSet<>();
     private final ArrayList<BlockPos> searchStarts = new ArrayList<>();
 
     public List<BlockPos> getContainerPositions() {
@@ -28,6 +32,7 @@ public class ChestFinder {
     public void resetSearch(BlockPos initialSource) {
         this.containerPositions.clear();
         this.searchedPositions.clear();
+        this.searchedInventories.clear();
         this.searchStarts.clear();
         if (initialSource != null) {
             this.searchStarts.add(initialSource);
@@ -43,7 +48,7 @@ public class ChestFinder {
     }
 
     public void findContainers(World world, BlockPos initialSource) {
-        if (searchStarts.isEmpty() && initialSource != null){
+        if (searchStarts.isEmpty() && initialSource != null) {
             searchStarts.add(initialSource);
         }
         if (!searchStarts.isEmpty() && world != null) {
@@ -55,6 +60,7 @@ public class ChestFinder {
         if (searchStarts.isEmpty()) {
             //Don't keep holding onto all these positions
             searchedPositions.clear();
+            searchedInventories.clear();
         }
     }
 
@@ -76,7 +82,19 @@ public class ChestFinder {
                             IInventory inventory = HopperTileEntity.getContainerAt(world, pos);
                             if ((inventory instanceof ChestTileEntity || inventory instanceof DoubleSidedInventory) && !(inventory instanceof EndersortEntity)) {
 //                        System.out.println("Found Chest at " + pos.toShortString());
-                                positions.add(pos);
+                                //Dedupe the two sided inventories
+                                if (inventory instanceof DoubleSidedInventory) {
+                                    Direction neighborDirection = ChestBlock.getConnectedDirection(world.getBlockState(pos));
+                                    BlockPos neighborPos = pos.offset(neighborDirection.getNormal());
+                                    if (!searchedInventories.contains(inventory) && !searchedPositions.contains(neighborPos)){
+                                        positions.add(pos);
+                                        searchedInventories.add(inventory);
+                                        searchedPositions.add(neighborPos);
+                                    }
+                                } else if (!searchedInventories.contains(inventory)) {
+                                    positions.add(pos);
+                                    searchedInventories.add(inventory);
+                                }
                             }
                         }
                     }
