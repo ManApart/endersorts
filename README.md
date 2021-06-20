@@ -10,10 +10,13 @@ Pushable chests are re-evaluated when the block is placed. If it's not picking u
 Any items stored in this chest will be placed in a nearby normal chest that contains that item.
 Range of 5 blocks in any direction
 
+![](EnderSortRecipe.PNG)
+
 ### EnderExtender
 
 Extends the range that an Endersort will look for chests to store items in.
 Range of 5 blocks in any direction
 
+![](EnderExtenderRecipe.PNG)
 
 ## TODO
