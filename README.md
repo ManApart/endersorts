@@ -1,6 +1,8 @@
 # Endersorts
 
-Auto sorting chests
+Auto sorting chests.
+
+Pushable chests are re-evaluated when the block is placed. If it's not picking up new chests try breaking and replacing the Endersort.
 
 
 ### Endersort
@@ -15,7 +17,3 @@ Range of 5 blocks in any direction
 
 
 ## TODO
-
-make sound on item move
-add crafting recipe pictures
-particle on picked chest

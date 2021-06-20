@@ -54,7 +54,6 @@ public class EndersortBlock extends ChestBlock {
             if (tileentity instanceof EndersortEntity) {
                 player.openMenu((EndersortEntity) tileentity);
                 player.awardStat(Stats.INSPECT_HOPPER);
-                ((EndersortEntity) tileentity).clearContainers();
                 world.playSound(null, pos, SoundEvents.ENDER_CHEST_OPEN, SoundCategory.PLAYERS, 1f, 1f);
             }
         }
