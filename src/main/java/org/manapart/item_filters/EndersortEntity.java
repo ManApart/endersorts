@@ -13,7 +13,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -23,6 +25,7 @@ public class EndersortEntity extends ChestTileEntity {
     private ChestFinder chestFinder = new ChestFinder();
     private int containerIndex = -1;
     private boolean distributedItems = false;
+    private Map<ResourceLocation, BlockPos> storageHints = new HashMap();
 
     public EndersortEntity() {
     }
@@ -40,6 +43,7 @@ public class EndersortEntity extends ChestTileEntity {
             if (chestFinder.isSearching()) {
                 chestFinder.findContainers(this.getLevel(), this.worldPosition);
             } else if (chestFinder.hasContainers()) {
+                distributeItemsByHints();
                 distributeItems();
             } else {
                 chestFinder.resetSearch(worldPosition);
@@ -54,7 +58,28 @@ public class EndersortEntity extends ChestTileEntity {
 
     public void clearContainers() {
         this.chestFinder.resetSearch(worldPosition);
+        this.storageHints.clear();
         this.containerIndex = -1;
+    }
+
+    private void distributeItemsByHints() {
+        if (!storageHints.isEmpty()) {
+            for (ItemStack item : this.getItems()) {
+                if (!item.isEmpty()) {
+                    ResourceLocation matchName = item.getItem().getRegistryName();
+                    BlockPos pos = storageHints.get(matchName);
+                    if (pos != null) {
+                        IInventory chest = HopperTileEntity.getContainerAt(this.getLevel(), pos);
+                        if (chest instanceof ChestTileEntity || chest instanceof DoubleSidedInventory) {
+                            Set<ResourceLocation> matches = buildMatchMap(chest);
+                            attemptToPush(item, chest, matches, pos);
+                        } else {
+                            clearContainers();
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private void distributeItems() {
@@ -105,9 +130,10 @@ public class EndersortEntity extends ChestTileEntity {
                 pushNewStack(item, destinationInventory);
             }
 
-//            if (item.isEmpty()) {
+            if (item.isEmpty()) {
+                storageHints.put(matchName, pos);
 //                System.out.println("Distributed " + matchName + " to " + pos.toShortString());
-//            }
+            }
         }
     }
 
