@@ -1,4 +1,4 @@
-package org.manapart.item_filters;
+package org.manapart.endersort;
 
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;

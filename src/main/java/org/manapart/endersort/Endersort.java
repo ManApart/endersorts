@@ -1,4 +1,4 @@
-package org.manapart.item_filters;
+package org.manapart.endersort;
 
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
@@ -29,27 +29,27 @@ public class Endersort {
     }
 
     private static EndersortBlock createBlock() {
-        EndersortBlock filter = new EndersortBlock();
-        filter.setRegistryName(new ResourceLocation(MODID + ":endersort_block"));
-        return filter;
+        EndersortBlock block = new EndersortBlock();
+        block.setRegistryName(new ResourceLocation(MODID + ":endersort_block"));
+        return block;
     }
 
     private static EndersortItem createItem(EndersortBlock block) {
-        EndersortItem filter = new EndersortItem(block);
-        filter.setRegistryName(new ResourceLocation(MODID + ":endersort_item"));
-        return filter;
+        EndersortItem item = new EndersortItem(block);
+        item.setRegistryName(new ResourceLocation(MODID + ":endersort_item"));
+        return item;
     }
 
     private static EnderExtenderBlock createExtenderBlock() {
-        EnderExtenderBlock filter = new EnderExtenderBlock();
-        filter.setRegistryName(new ResourceLocation(MODID + ":ender_extender_block"));
-        return filter;
+        EnderExtenderBlock block = new EnderExtenderBlock();
+        block.setRegistryName(new ResourceLocation(MODID + ":ender_extender_block"));
+        return block;
     }
 
     private static EnderExtenderItem createExtenderItem(EnderExtenderBlock block) {
-        EnderExtenderItem filter = new EnderExtenderItem(block);
-        filter.setRegistryName(new ResourceLocation(MODID + ":ender_extender_item"));
-        return filter;
+        EnderExtenderItem item = new EnderExtenderItem(block);
+        item.setRegistryName(new ResourceLocation(MODID + ":ender_extender_item"));
+        return item;
     }
 
     private static TileEntityType<EndersortEntity> createEntityType(EndersortBlock block) {

@@ -1,4 +1,4 @@
-package org.manapart.item_filters;
+package org.manapart.endersort;
 
 import net.minecraft.inventory.DoubleSidedInventory;
 import net.minecraft.inventory.IInventory;
