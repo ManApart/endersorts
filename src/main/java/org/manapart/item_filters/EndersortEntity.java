@@ -74,6 +74,7 @@ public class EndersortEntity extends ChestTileEntity {
                             Set<ResourceLocation> matches = buildMatchMap(chest);
                             attemptToPush(item, chest, matches, pos);
                         } else {
+                            System.out.println("Found invalid chest at " + pos.toShortString());
                             clearContainers();
                         }
                     }
@@ -83,6 +84,9 @@ public class EndersortEntity extends ChestTileEntity {
     }
 
     private void distributeItems() {
+        if (!chestFinder.hasContainers()){
+            return;
+        }
         containerIndex++;
         if (containerIndex >= chestFinder.getContainerPositions().size()) {
             containerIndex = 0;
