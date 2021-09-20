@@ -1,40 +1,41 @@
 package org.manapart.endersort
 
-import net.minecraft.block.ChestBlock
-import org.manapart.endersort.EndersortBlock
-import net.minecraft.tileentity.TileEntityType
-import net.minecraft.tileentity.ChestTileEntity
-import net.minecraft.block.BlockState
-import net.minecraft.world.IBlockReader
-import net.minecraft.tileentity.TileEntity
-import org.manapart.endersort.EndersortEntity
-import net.minecraft.world.World
-import net.minecraft.util.math.BlockPos
-import net.minecraft.entity.player.PlayerEntity
-import net.minecraft.util.Hand
-import net.minecraft.util.math.BlockRayTraceResult
-import net.minecraft.util.ActionResultType
-import net.minecraft.util.SoundEvents
-import net.minecraft.util.SoundCategory
-import net.minecraft.inventory.InventoryHelper
-import net.minecraft.block.BlockRenderType
-import net.minecraft.tileentity.TileEntityMerger.ICallbackWrapper
-import net.minecraft.particles.ParticleTypes
-import net.minecraft.block.AbstractBlock
-import net.minecraft.block.material.MaterialColor
-import net.minecraftforge.common.ToolType
-import net.minecraft.block.SoundType
+import net.minecraft.block.*
 import net.minecraft.block.material.Material
+import net.minecraft.block.material.MaterialColor
+import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.inventory.InventoryHelper
+import net.minecraft.particles.ParticleTypes
 import net.minecraft.stats.Stats
+import net.minecraft.tileentity.ChestTileEntity
+import net.minecraft.tileentity.TileEntity
+import net.minecraft.tileentity.TileEntityMerger.ICallbackWrapper
+import net.minecraft.util.ActionResultType
+import net.minecraft.util.Hand
+import net.minecraft.util.SoundCategory
+import net.minecraft.util.SoundEvents
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.BlockRayTraceResult
+import net.minecraft.world.IBlockReader
+import net.minecraft.world.World
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
+import net.minecraftforge.common.ToolType
 import java.util.*
 import java.util.function.Supplier
 
+private fun createProps(): AbstractBlock.Properties {
+    val padMat = Material.Builder(MaterialColor.COLOR_BLUE).build()
+    val props = AbstractBlock.Properties.of(padMat)
+    props.requiresCorrectToolForDrops()
+    props.harvestTool(ToolType.PICKAXE)
+    props.sound(SoundType.METAL)
+    props.strength(4f)
+    return props
+}
+
 class EndersortBlock : ChestBlock(createProps(), Supplier { null }) {
-    override fun createTileEntity(state: BlockState, world: IBlockReader): TileEntity? {
-        return EndersortEntity()
-    }
+    override fun createTileEntity(state: BlockState, world: IBlockReader): TileEntity = EndersortEntity()
 
     override fun use(state: BlockState, world: World, pos: BlockPos, player: PlayerEntity, hand: Hand, hit: BlockRayTraceResult): ActionResultType {
         if (!world.isClientSide) {
@@ -50,9 +51,9 @@ class EndersortBlock : ChestBlock(createProps(), Supplier { null }) {
 
     override fun onRemove(state: BlockState, world: World, pos: BlockPos, newState: BlockState, isMoving: Boolean) {
         if (state.block !== newState.block) {
-            val tileentity = world.getBlockEntity(pos)
-            if (tileentity is EndersortEntity) {
-                InventoryHelper.dropContents(world, pos, tileentity as EndersortEntity?)
+            val tileEntity = world.getBlockEntity(pos)
+            if (tileEntity is EndersortEntity) {
+                InventoryHelper.dropContents(world, pos, tileEntity)
             }
             super.onRemove(state, world, pos, newState, isMoving)
         }
@@ -82,15 +83,4 @@ class EndersortBlock : ChestBlock(createProps(), Supplier { null }) {
         }
     }
 
-    companion object {
-        private fun createProps(): Properties {
-            val padMat = Material.Builder(MaterialColor.COLOR_BLUE).build()
-            val props = Properties.of(padMat)
-            props.requiresCorrectToolForDrops()
-            props.harvestTool(ToolType.PICKAXE)
-            props.sound(SoundType.METAL)
-            props.strength(4f)
-            return props
-        }
-    }
 }

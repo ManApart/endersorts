@@ -19,9 +19,6 @@ class ChestFinder {
     //Don't search these positions again
     private val searchedPositions: MutableSet<BlockPos> = HashSet()
     private val searchStarts = ArrayList<BlockPos>()
-    fun getContainerPositions(): List<BlockPos> {
-        return containerPositions
-    }
 
     fun resetSearch(initialSource: BlockPos?) {
         containerPositions.clear()
@@ -32,19 +29,15 @@ class ChestFinder {
         }
     }
 
-    val isSearching: Boolean
-        get() = !searchStarts.isEmpty()
-
-    fun hasContainers(): Boolean {
-        return !containerPositions.isEmpty()
-    }
+    fun isSearching(): Boolean = searchStarts.isNotEmpty()
+    fun hasContainers(): Boolean = containerPositions.isNotEmpty()
 
     fun findContainers(world: World?, initialSource: BlockPos?) {
         if (searchStarts.isEmpty() && initialSource != null) {
             searchStarts.add(initialSource)
         }
-        if (!searchStarts.isEmpty() && world != null) {
-            val source = searchStarts[0]
+        if (searchStarts.isNotEmpty() && world != null) {
+            val source = searchStarts.first()
             searchStarts.remove(source)
             findContainersInRadius(world, source)
         }
@@ -56,13 +49,10 @@ class ChestFinder {
     }
 
     private fun findContainersInRadius(world: World, source: BlockPos) {
-        val sourceX = source.x
-        val sourceY = source.y
-        val sourceZ = source.z
         val positions: MutableSet<BlockPos> = HashSet()
-        for (x in sourceX - radius..sourceX + radius) {
-            for (y in sourceY - radius..sourceY + radius) {
-                for (z in sourceZ - radius..sourceZ + radius) {
+        for (x in source.x - radius..source.x + radius) {
+            for (y in source.y - radius..source.y + radius) {
+                for (z in source.z - radius..source.z + radius) {
                     val pos = BlockPos(x, y, z)
                     if (validContainerExistsHere(world, pos)) {
                         positions.add(pos)

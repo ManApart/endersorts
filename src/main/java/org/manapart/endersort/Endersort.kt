@@ -13,14 +13,10 @@ const val MODID = "endersort"
 
 @Mod(MODID)
 object Endersort {
-    private val log = LogManager.getLogger()
 
     init {
-        log.info("Endersort init")
         ModBlocks.REGISTRY.register(MOD_BUS)
         ModItems.REGISTRY.register(MOD_BUS)
-
-        FORGE_BUS.addListener(::onServerAboutToStart)
     }
 
     val tileType = createEntityType()
@@ -30,9 +26,6 @@ object Endersort {
         return Item(Item.Properties()).also {
             it.setRegistryName("$MODID:es_icon")
         }
-    }
-    private fun onServerAboutToStart(event: FMLServerAboutToStartEvent) {
-        log.info("Server starting...")
     }
 
     private fun createEntityType(): TileEntityType<EndersortEntity> {

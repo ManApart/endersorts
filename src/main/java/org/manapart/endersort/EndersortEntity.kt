@@ -16,6 +16,7 @@ import net.minecraft.inventory.DoubleSidedInventory
 import net.minecraft.util.SoundEvents
 import net.minecraft.util.SoundCategory
 import java.util.HashSet
+import kotlin.math.min
 
 class EndersortEntity : ChestTileEntity() {
     private var transferCooldown = -1
@@ -25,13 +26,14 @@ class EndersortEntity : ChestTileEntity() {
     private var distributedItems = false
     private val storageHints: MutableMap<ResourceLocation, BlockPos> = mutableMapOf()
 
-    override fun getType(): TileEntityType<*>  = Endersort.tileType
+    override fun getType(): TileEntityType<*> = Endersort.tileType
+    override fun getDefaultName(): ITextComponent = StringTextComponent("Endersort")
 
     override fun tick() {
         --transferCooldown
         if (transferCooldown <= 0 && !this.isEmpty) {
             transferCooldown = cooldownBuffer
-            if (chestFinder.isSearching) {
+            if (chestFinder.isSearching()) {
                 chestFinder.findContainers(getLevel(), worldPosition)
             } else if (chestFinder.hasContainers()) {
                 distributeItemsByHints()
@@ -42,24 +44,20 @@ class EndersortEntity : ChestTileEntity() {
         }
     }
 
-    override fun getDefaultName(): ITextComponent {
-        return StringTextComponent("Endersort")
-    }
-
-    fun clearContainers() {
+    private fun clearContainers() {
         chestFinder.resetSearch(worldPosition)
         storageHints.clear()
         containerIndex = -1
     }
 
     private fun distributeItemsByHints() {
-        if (!storageHints.isEmpty()) {
+        if (storageHints.isNotEmpty()) {
             for (item in items) {
                 if (!item.isEmpty) {
                     val matchName = item.item.registryName
                     val pos = storageHints[matchName]
                     if (pos != null) {
-                        val chest = HopperTileEntity.getContainerAt(getLevel(), pos)
+                        val chest = HopperTileEntity.getContainerAt(getLevel()!!, pos)
                         if (chest is ChestTileEntity || chest is DoubleSidedInventory) {
                             val matches = buildMatchMap(chest)
                             attemptToPush(item, chest, matches, pos)
@@ -83,7 +81,7 @@ class EndersortEntity : ChestTileEntity() {
         }
         //        System.out.println("Distributing Items to " + containerIndex);
         val pos = chestFinder.containerPositions[containerIndex]
-        val chest = HopperTileEntity.getContainerAt(getLevel(), pos)
+        val chest = HopperTileEntity.getContainerAt(getLevel()!!, pos)
         if (chest is ChestTileEntity || chest is DoubleSidedInventory) {
             pushItems(chest, pos)
         } else {
@@ -91,7 +89,7 @@ class EndersortEntity : ChestTileEntity() {
         }
         if (distributedItems) {
             distributedItems = false
-            getLevel()!!.playSound(null, pos, SoundEvents.ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f)
+            getLevel()?.playSound(null, pos, SoundEvents.ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f)
         }
     }
 
@@ -135,7 +133,7 @@ class EndersortEntity : ChestTileEntity() {
             for (i in 0 until destinationInventory.containerSize) {
                 val destItem = destinationInventory.getItem(i)
                 if (destItem.isStackable && matchName == destItem.item.registryName) {
-                    val itemCount = Math.min(destItem.maxStackSize - destItem.count, item.count)
+                    val itemCount = min(destItem.maxStackSize - destItem.count, item.count)
                     if (itemCount > 0) {
                         destItem.count = destItem.count + itemCount
                         item.count = item.count - itemCount
@@ -154,7 +152,7 @@ class EndersortEntity : ChestTileEntity() {
         for (i in 0 until destinationInventory.containerSize) {
             var destItem = destinationInventory.getItem(i)
             if (destItem.isEmpty) {
-                val itemCount = Math.min(destItem.maxStackSize - destItem.count, item.count)
+                val itemCount = min(destItem.maxStackSize - destItem.count, item.count)
                 if (itemCount > 0) {
                     destinationInventory.setItem(i, item.copy())
                     destItem = destinationInventory.getItem(i)
