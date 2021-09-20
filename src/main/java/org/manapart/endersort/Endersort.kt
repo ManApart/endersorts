@@ -24,7 +24,7 @@ object Endersort {
     }
 
     val tileType = createEntityType()
-    var endersortIcon = createIcon()
+    val endersortIcon by lazy{ createIcon() }
 
     private fun createIcon(): Item {
         return Item(Item.Properties()).also {
@@ -36,7 +36,7 @@ object Endersort {
     }
 
     private fun createEntityType(): TileEntityType<EndersortEntity> {
-        return TileEntityType.Builder.of({ EndersortEntity() }, ModBlocks.ENDERSORT_BLOCK)
+        return TileEntityType.Builder.of({ EndersortEntity() }, ModBlocks.endersortBlock)
             .build(null).also {
                 it.setRegistryName("$MODID:endersort")
             }
