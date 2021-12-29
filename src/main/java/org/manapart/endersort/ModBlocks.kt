@@ -2,6 +2,7 @@ package org.manapart.endersort
 
 import net.minecraftforge.registries.ForgeRegistries
 import thedarkcolour.kotlinforforge.forge.KDeferredRegister
+import thedarkcolour.kotlinforforge.forge.registerObject
 
 object ModBlocks {
 

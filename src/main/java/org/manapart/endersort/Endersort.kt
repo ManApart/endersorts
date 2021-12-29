@@ -1,12 +1,7 @@
 package org.manapart.endersort
 
-import net.minecraft.item.Item
-import net.minecraft.tileentity.TileEntityType
-import net.minecraftforge.common.MinecraftForge
+import net.minecraft.world.item.Item
 import net.minecraftforge.fml.common.Mod
-import net.minecraftforge.fml.event.server.FMLServerAboutToStartEvent
-import org.apache.logging.log4j.LogManager
-import thedarkcolour.kotlinforforge.forge.FORGE_BUS
 import thedarkcolour.kotlinforforge.forge.MOD_BUS
 
 const val MODID = "endersort"
