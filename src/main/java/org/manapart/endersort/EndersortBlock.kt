@@ -3,6 +3,7 @@ package org.manapart.endersort
 import net.minecraft.core.BlockPos
 import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.sounds.SoundEvents
+import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.ChestBlock
 import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.state.BlockBehaviour
@@ -58,7 +59,7 @@ class EndersortBlock : ChestBlock(createProps(), Supplier { null }) {
     }
 
     @OnlyIn(Dist.CLIENT)
-    override fun animateTick(p_180655_1_: BlockState, world: World, pos: BlockPos, rand: Random) {
+    override fun animateTick(p_180655_1_: BlockState, world: Level, pos: BlockPos, rand: Random) {
         for (i in 0..2) {
             val j = rand.nextInt(2) * 2 - 1
             val k = rand.nextInt(2) * 2 - 1

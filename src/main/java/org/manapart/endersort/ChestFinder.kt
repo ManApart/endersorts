@@ -1,8 +1,11 @@
 package org.manapart.endersort
 
 import net.minecraft.core.BlockPos
+import net.minecraft.world.CompoundContainer
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.ChestBlock
+import net.minecraft.world.level.block.entity.ChestBlockEntity
+import net.minecraft.world.level.block.entity.HopperBlockEntity
 import java.util.HashSet
 import java.util.ArrayList
 
@@ -65,11 +68,11 @@ class ChestFinder {
             if (block is EnderExtenderBlock) {
                 searchStarts.add(pos)
             } else if (block is ChestBlock) {
-                val inventory = HopperTileEntity.getContainerAt(world, pos)
+                val inventory = HopperBlockEntity.getContainerAt(world, pos)
                 if (inventory !is EndersortEntity) {
-                    if (inventory is ChestTileEntity) {
+                    if (inventory is ChestBlockEntity) {
                         return true
-                    } else if (inventory is DoubleSidedInventory) {
+                    } else if (inventory is CompoundContainer) {
                         val neighborDirection = ChestBlock.getConnectedDirection(world.getBlockState(pos))
                         val neighborPos = pos.offset(neighborDirection.normal)
                         if (!searchedPositions.contains(neighborPos)) {

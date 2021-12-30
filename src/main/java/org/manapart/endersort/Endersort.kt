@@ -1,6 +1,7 @@
 package org.manapart.endersort
 
 import net.minecraft.world.item.Item
+import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraftforge.fml.common.Mod
 import thedarkcolour.kotlinforforge.forge.MOD_BUS
 
@@ -15,7 +16,7 @@ object Endersort {
     }
 
     val tileType = createEntityType()
-    val endersortIcon by lazy{ createIcon() }
+    val endersortIcon by lazy { createIcon() }
 
     private fun createIcon(): Item {
         return Item(Item.Properties()).also {
@@ -23,8 +24,8 @@ object Endersort {
         }
     }
 
-    private fun createEntityType(): TileEntityType<EndersortEntity> {
-        return TileEntityType.Builder.of({ EndersortEntity() }, ModBlocks.endersortBlock)
+    private fun createEntityType(): BlockEntityType<EndersortEntity> {
+        return BlockEntityType.Builder.of({ pos, state -> EndersortEntity(pos, state) }, ModBlocks.endersortBlock)
             .build(null).also {
                 it.setRegistryName("$MODID:endersort")
             }

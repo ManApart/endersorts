@@ -1,24 +1,15 @@
 package org.manapart.endersort
 
-import net.minecraft.tileentity.ChestTileEntity
-import org.manapart.endersort.ChestFinder
-import net.minecraft.util.ResourceLocation
-import net.minecraft.util.math.BlockPos
-import java.util.HashMap
-import net.minecraft.tileentity.TileEntityType
-import org.manapart.endersort.Endersort
-import net.minecraft.util.text.ITextComponent
-import net.minecraft.util.text.StringTextComponent
-import net.minecraft.item.ItemStack
-import net.minecraft.inventory.IInventory
-import net.minecraft.tileentity.HopperTileEntity
-import net.minecraft.inventory.DoubleSidedInventory
-import net.minecraft.util.SoundEvents
-import net.minecraft.util.SoundCategory
+import net.minecraft.core.BlockPos
+import net.minecraft.resources.ResourceLocation
+import net.minecraft.sounds.SoundEvents
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.level.block.entity.ChestBlockEntity
+import net.minecraft.world.level.block.state.BlockState
 import java.util.HashSet
 import kotlin.math.min
 
-class EndersortEntity : ChestTileEntity() {
+class EndersortEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(pos, state) {
     private var transferCooldown = -1
     private val cooldownBuffer = 5
     private val chestFinder = ChestFinder()
