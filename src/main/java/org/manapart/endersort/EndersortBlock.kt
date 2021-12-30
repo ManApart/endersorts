@@ -3,13 +3,26 @@ package org.manapart.endersort
 import net.minecraft.core.BlockPos
 import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.sounds.SoundEvents
+import net.minecraft.sounds.SoundSource
+import net.minecraft.stats.Stats
+import net.minecraft.world.ContainerHelper
+import net.minecraft.world.Containers
+import net.minecraft.world.Containers.dropContents
+import net.minecraft.world.InteractionHand
+import net.minecraft.world.InteractionResult
+import net.minecraft.world.entity.player.Player
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.ChestBlock
+import net.minecraft.world.level.block.DoubleBlockCombiner
+import net.minecraft.world.level.block.RenderShape
 import net.minecraft.world.level.block.SoundType
+import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.world.level.block.entity.ChestBlockEntity
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.material.Material
 import net.minecraft.world.level.material.MaterialColor
+import net.minecraft.world.phys.BlockHitResult
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
 import java.util.*
@@ -25,37 +38,35 @@ private fun createProps(): BlockBehaviour.Properties {
 }
 
 class EndersortBlock : ChestBlock(createProps(), Supplier { null }) {
-    override fun createTileEntity(state: BlockState, world: IBlockReader): TileEntity = EndersortEntity()
+    override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity = EndersortEntity(pos, state)
 
-    override fun use(state: BlockState, world: World, pos: BlockPos, player: PlayerEntity, hand: Hand, hit: BlockRayTraceResult): ActionResultType {
+    override fun use(state: BlockState, world: Level, pos: BlockPos, player: Player, hand: InteractionHand, rayTraceResult: BlockHitResult): InteractionResult {
         if (!world.isClientSide) {
             val tileentity = world.getBlockEntity(pos)
             if (tileentity is EndersortEntity) {
                 player.openMenu(tileentity as EndersortEntity?)
                 player.awardStat(Stats.INSPECT_HOPPER)
-                world.playSound(null, pos, SoundEvents.ENDER_CHEST_OPEN, SoundCategory.PLAYERS, 1f, 1f)
+                world.playSound(null, pos, SoundEvents.ENDER_CHEST_OPEN, SoundSource.PLAYERS, 1f, 1f)
             }
         }
-        return ActionResultType.PASS
+        return InteractionResult.PASS
     }
 
-    override fun onRemove(state: BlockState, world: World, pos: BlockPos, newState: BlockState, isMoving: Boolean) {
+    override fun onRemove(state: BlockState, world: Level, pos: BlockPos, newState: BlockState, isMoving: Boolean) {
         if (state.block !== newState.block) {
             val tileEntity = world.getBlockEntity(pos)
             if (tileEntity is EndersortEntity) {
-                InventoryHelper.dropContents(world, pos, tileEntity)
+                dropContents(world, pos, tileEntity)
             }
             super.onRemove(state, world, pos, newState, isMoving)
         }
     }
 
-    override fun getRenderShape(p_149645_1_: BlockState): BlockRenderType {
-        return BlockRenderType.MODEL
-    }
+    override fun getRenderShape(p_149645_1_: BlockState): RenderShape  = RenderShape.MODEL
 
     //Chest combine was throwing a null pointer. This hopefully tells the combiner that these chests are always just 1, no double chests
-    override fun combine(p_225536_1_: BlockState, world: World, pos: BlockPos, p_225536_4_: Boolean): ICallbackWrapper<ChestTileEntity> {
-        return ICallbackWrapper.Single(world.getBlockEntity(pos) as ChestTileEntity)
+    override fun combine(p_225536_1_: BlockState, world: Level, pos: BlockPos, p_225536_4_: Boolean): DoubleBlockCombiner.NeighborCombineResult<ChestBlockEntity> {
+        return DoubleBlockCombiner.NeighborCombineResult.Single(world.getBlockEntity(pos) as ChestBlockEntity)
     }
 
     @OnlyIn(Dist.CLIENT)

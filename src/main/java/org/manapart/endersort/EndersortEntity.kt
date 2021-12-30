@@ -1,13 +1,24 @@
 package org.manapart.endersort
 
 import net.minecraft.core.BlockPos
+import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.MutableComponent
+import net.minecraft.network.chat.TextComponent
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.sounds.SoundEvents
+import net.minecraft.sounds.SoundSource
+import net.minecraft.world.CompoundContainer
+import net.minecraft.world.Container
 import net.minecraft.world.item.ItemStack
-import net.minecraft.world.level.block.entity.ChestBlockEntity
+import net.minecraft.world.level.Level
+import net.minecraft.world.level.block.BaseEntityBlock
+import net.minecraft.world.level.block.entity.*
 import net.minecraft.world.level.block.state.BlockState
-import java.util.HashSet
 import kotlin.math.min
+
+fun <T : BlockEntity?> serverTick(world: Level, state: BlockState, type: BlockEntityType<T>) {
+
+}
 
 class EndersortEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(pos, state) {
     private var transferCooldown = -1
@@ -17,10 +28,20 @@ class EndersortEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(pos, 
     private var distributedItems = false
     private val storageHints: MutableMap<ResourceLocation, BlockPos> = mutableMapOf()
 
-    override fun getType(): TileEntityType<*> = Endersort.tileType
-    override fun getDefaultName(): ITextComponent = StringTextComponent("Endersort")
+    override fun getType(): BlockEntityType<*> = Endersort.tileType
+    override fun getName(): MutableComponent = TextComponent("")
 
-    override fun tick() {
+    override fun getDefaultName(): TextComponent = TextComponent("Endersort")
+
+//    override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity = EndersortEntity(pos, state)
+
+//    override fun <T : BlockEntity?> getTicker(world: Level, state: BlockState, type: BlockEntityType<T>): BlockEntityTicker<T>? {
+//        return if (level?.isClientSide == true) null else {
+//            BaseEntityBlock.createTickerHelper(type, Endersort.tileType, ::serverTick);
+//        }
+//    }
+
+    fun tick() {
         --transferCooldown
         if (transferCooldown <= 0 && !this.isEmpty) {
             transferCooldown = cooldownBuffer
@@ -48,8 +69,8 @@ class EndersortEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(pos, 
                     val matchName = item.item.registryName
                     val pos = storageHints[matchName]
                     if (pos != null) {
-                        val chest = HopperTileEntity.getContainerAt(getLevel()!!, pos)
-                        if (chest is ChestTileEntity || chest is DoubleSidedInventory) {
+                        val chest = HopperBlockEntity.getContainerAt(getLevel()!!, pos)
+                        if (chest is ChestBlockEntity || chest is CompoundContainer) {
                             val matches = buildMatchMap(chest)
                             attemptToPush(item, chest, matches, pos)
                         } else {
@@ -72,19 +93,19 @@ class EndersortEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(pos, 
         }
         //        System.out.println("Distributing Items to " + containerIndex);
         val pos = chestFinder.containerPositions[containerIndex]
-        val chest = HopperTileEntity.getContainerAt(getLevel()!!, pos)
-        if (chest is ChestTileEntity || chest is DoubleSidedInventory) {
+        val chest = HopperBlockEntity.getContainerAt(getLevel()!!, pos)
+        if (chest is ChestBlockEntity || chest is CompoundContainer) {
             pushItems(chest, pos)
         } else {
             clearContainers()
         }
         if (distributedItems) {
             distributedItems = false
-            getLevel()?.playSound(null, pos, SoundEvents.ENDERMAN_TELEPORT, SoundCategory.PLAYERS, 1f, 1f)
+            getLevel()?.playSound(null, pos, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1f, 1f)
         }
     }
 
-    private fun pushItems(chest: IInventory, pos: BlockPos) {
+    private fun pushItems(chest: Container, pos: BlockPos) {
         if (!chest.isEmpty) {
             val matches = buildMatchMap(chest)
             for (item in items) {
@@ -93,7 +114,7 @@ class EndersortEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(pos, 
         }
     }
 
-    private fun buildMatchMap(chest: IInventory): Set<ResourceLocation?> {
+    private fun buildMatchMap(chest: Container): Set<ResourceLocation?> {
         val matches: MutableSet<ResourceLocation?> = HashSet()
         for (i in 0 until chest.containerSize) {
             val destItem = chest.getItem(i)
@@ -104,7 +125,7 @@ class EndersortEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(pos, 
         return matches
     }
 
-    private fun attemptToPush(item: ItemStack, destinationInventory: IInventory, matches: Set<ResourceLocation?>, pos: BlockPos) {
+    private fun attemptToPush(item: ItemStack, destinationInventory: Container, matches: Set<ResourceLocation?>, pos: BlockPos) {
         val matchName: ResourceLocation = item.item.registryName!!
         if (!item.isEmpty && matches.contains(matchName)) {
             //Try to combine stacks first, then try full items
@@ -119,7 +140,7 @@ class EndersortEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(pos, 
         }
     }
 
-    private fun pushStackable(item: ItemStack, destinationInventory: IInventory, matchName: ResourceLocation?) {
+    private fun pushStackable(item: ItemStack, destinationInventory: Container, matchName: ResourceLocation?) {
         if (item.isStackable) {
             for (i in 0 until destinationInventory.containerSize) {
                 val destItem = destinationInventory.getItem(i)
@@ -139,7 +160,7 @@ class EndersortEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(pos, 
         }
     }
 
-    private fun pushNewStack(item: ItemStack, destinationInventory: IInventory) {
+    private fun pushNewStack(item: ItemStack, destinationInventory: Container) {
         for (i in 0 until destinationInventory.containerSize) {
             var destItem = destinationInventory.getItem(i)
             if (destItem.isEmpty) {
@@ -159,4 +180,11 @@ class EndersortEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(pos, 
             }
         }
     }
+//
+//    class EnderSortTicker<T : BlockEntity> : BlockEntityTicker<T> {
+//        override fun tick(p_155253_: Level, p_155254_: BlockPos, p_155255_: BlockState, p_155256_: T) {
+//            TODO("Not yet implemented")
+//        }
+//    }
+
 }
