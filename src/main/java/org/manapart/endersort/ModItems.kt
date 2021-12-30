@@ -1,10 +1,11 @@
 package org.manapart.endersort
 
+import net.minecraftforge.registries.DeferredRegister
 import net.minecraftforge.registries.ForgeRegistries
-import thedarkcolour.kotlinforforge.forge.KDeferredRegister
+import thedarkcolour.kotlinforforge.forge.registerObject
 
 object ModItems {
-    val REGISTRY = KDeferredRegister(ForgeRegistries.ITEMS, MODID)
+    val REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, MODID)
 
     val ENDERSORT_ITEM by REGISTRY.registerObject("endersort_item") {
         EndersortItem(ModBlocks.endersortBlock)

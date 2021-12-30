@@ -1,15 +1,9 @@
 package org.manapart.endersort
 
-import net.minecraft.util.math.BlockPos
+import net.minecraft.core.BlockPos
+import net.minecraft.world.level.Level
+import net.minecraft.world.level.block.ChestBlock
 import java.util.HashSet
-import net.minecraft.world.World
-import org.manapart.endersort.EnderExtenderBlock
-import net.minecraft.block.ChestBlock
-import net.minecraft.inventory.IInventory
-import net.minecraft.tileentity.HopperTileEntity
-import org.manapart.endersort.EndersortEntity
-import net.minecraft.tileentity.ChestTileEntity
-import net.minecraft.inventory.DoubleSidedInventory
 import java.util.ArrayList
 
 class ChestFinder {
@@ -32,7 +26,7 @@ class ChestFinder {
     fun isSearching(): Boolean = searchStarts.isNotEmpty()
     fun hasContainers(): Boolean = containerPositions.isNotEmpty()
 
-    fun findContainers(world: World?, initialSource: BlockPos?) {
+    fun findContainers(world: Level?, initialSource: BlockPos?) {
         if (searchStarts.isEmpty() && initialSource != null) {
             searchStarts.add(initialSource)
         }
@@ -48,7 +42,7 @@ class ChestFinder {
         }
     }
 
-    private fun findContainersInRadius(world: World, source: BlockPos) {
+    private fun findContainersInRadius(world: Level, source: BlockPos) {
         val positions: MutableSet<BlockPos> = HashSet()
         for (x in source.x - radius..source.x + radius) {
             for (y in source.y - radius..source.y + radius) {
@@ -64,7 +58,7 @@ class ChestFinder {
         println("Found " + positions.size + " containers")
     }
 
-    private fun validContainerExistsHere(world: World, pos: BlockPos): Boolean {
+    private fun validContainerExistsHere(world: Level, pos: BlockPos): Boolean {
         if (!searchedPositions.contains(pos)) {
             searchedPositions.add(pos)
             val block = world.getBlockState(pos).block

@@ -1,19 +1,18 @@
 package org.manapart.endersort
 
-import net.minecraft.block.AbstractBlock.Properties
-import net.minecraft.block.Block
-import net.minecraft.block.SoundType
-import net.minecraft.block.material.Material
-import net.minecraft.block.material.MaterialColor
-import net.minecraftforge.common.ToolType
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.SoundType
+import net.minecraft.world.level.block.state.BlockBehaviour
+import net.minecraft.world.level.material.Material
+import net.minecraft.world.level.material.MaterialColor
+
 
 class EnderExtenderBlock : Block(createProps())
 
-private fun createProps(): Properties {
+private fun createProps(): BlockBehaviour.Properties {
     val padMat = Material.Builder(MaterialColor.COLOR_BLUE).build()
-    val props = Properties.of(padMat)
+    val props = BlockBehaviour.Properties.of(padMat)
     props.requiresCorrectToolForDrops()
-    props.harvestTool(ToolType.PICKAXE)
     props.sound(SoundType.METAL)
     props.strength(4f)
     return props
