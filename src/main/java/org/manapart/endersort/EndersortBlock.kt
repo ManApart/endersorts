@@ -2,21 +2,19 @@ package org.manapart.endersort
 
 import net.minecraft.core.BlockPos
 import net.minecraft.core.particles.ParticleTypes
+import net.minecraft.server.level.ServerLevel
 import net.minecraft.sounds.SoundEvents
 import net.minecraft.sounds.SoundSource
 import net.minecraft.stats.Stats
-import net.minecraft.world.ContainerHelper
-import net.minecraft.world.Containers
 import net.minecraft.world.Containers.dropContents
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
 import net.minecraft.world.entity.player.Player
 import net.minecraft.world.level.Level
-import net.minecraft.world.level.block.ChestBlock
-import net.minecraft.world.level.block.DoubleBlockCombiner
-import net.minecraft.world.level.block.RenderShape
-import net.minecraft.world.level.block.SoundType
+import net.minecraft.world.level.block.*
 import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.world.level.block.entity.BlockEntityTicker
+import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.entity.ChestBlockEntity
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.block.state.BlockState
@@ -62,11 +60,27 @@ class EndersortBlock : ChestBlock(createProps(), Supplier { null }) {
         }
     }
 
-    override fun getRenderShape(p_149645_1_: BlockState): RenderShape  = RenderShape.MODEL
+    override fun getRenderShape(p_149645_1_: BlockState): RenderShape = RenderShape.MODEL
+
+    override fun <T : BlockEntity?> getTicker(world: Level, state: BlockState, type: BlockEntityType<T>): BlockEntityTicker<T>? {
+        return if (world.isClientSide) {
+            super.getTicker(world, state, type)
+        } else {
+            createTickerHelper(type, blockEntityType(), EndersortEntity::sortItems)
+        }
+    }
 
     //Chest combine was throwing a null pointer. This hopefully tells the combiner that these chests are always just 1, no double chests
     override fun combine(p_225536_1_: BlockState, world: Level, pos: BlockPos, p_225536_4_: Boolean): DoubleBlockCombiner.NeighborCombineResult<ChestBlockEntity> {
         return DoubleBlockCombiner.NeighborCombineResult.Single(world.getBlockEntity(pos) as ChestBlockEntity)
+    }
+
+    override fun tick(state: BlockState, world: ServerLevel, pos: BlockPos, p_153062_: Random) {
+        val blockEntity = world.getBlockEntity(pos)!!
+//        if (blockEntity is EndersortEntity) {
+//            blockEntity.tickInternal()
+//            blockEntity.recheckOpen()
+//        }
     }
 
     @OnlyIn(Dist.CLIENT)

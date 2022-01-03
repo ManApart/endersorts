@@ -1,7 +1,6 @@
 package org.manapart.endersort
 
 import net.minecraft.core.BlockPos
-import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
 import net.minecraft.network.chat.TextComponent
 import net.minecraft.resources.ResourceLocation
@@ -11,14 +10,11 @@ import net.minecraft.world.CompoundContainer
 import net.minecraft.world.Container
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
-import net.minecraft.world.level.block.BaseEntityBlock
-import net.minecraft.world.level.block.entity.*
+import net.minecraft.world.level.block.entity.BlockEntityType
+import net.minecraft.world.level.block.entity.ChestBlockEntity
+import net.minecraft.world.level.block.entity.HopperBlockEntity
 import net.minecraft.world.level.block.state.BlockState
 import kotlin.math.min
-
-fun <T : BlockEntity?> serverTick(world: Level, state: BlockState, type: BlockEntityType<T>) {
-
-}
 
 class EndersortEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(pos, state) {
     private var transferCooldown = -1
@@ -33,15 +29,13 @@ class EndersortEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(pos, 
 
     override fun getDefaultName(): TextComponent = TextComponent("Endersort")
 
-//    override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity = EndersortEntity(pos, state)
+    companion object {
+        fun sortItems(world: Level?, pos: BlockPos?, state: BlockState?, entity: ChestBlockEntity) {
+            (entity as EndersortEntity).tickInternal()
+        }
+    }
 
-//    override fun <T : BlockEntity?> getTicker(world: Level, state: BlockState, type: BlockEntityType<T>): BlockEntityTicker<T>? {
-//        return if (level?.isClientSide == true) null else {
-//            BaseEntityBlock.createTickerHelper(type, Endersort.tileType, ::serverTick);
-//        }
-//    }
-
-    fun tick() {
+    fun tickInternal() {
         --transferCooldown
         if (transferCooldown <= 0 && !this.isEmpty) {
             transferCooldown = cooldownBuffer
@@ -180,11 +174,5 @@ class EndersortEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(pos, 
             }
         }
     }
-//
-//    class EnderSortTicker<T : BlockEntity> : BlockEntityTicker<T> {
-//        override fun tick(p_155253_: Level, p_155254_: BlockPos, p_155255_: BlockState, p_155256_: T) {
-//            TODO("Not yet implemented")
-//        }
-//    }
 
 }
