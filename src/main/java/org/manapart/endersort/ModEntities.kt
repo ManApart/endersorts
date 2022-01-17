@@ -16,9 +16,7 @@ object ModEntities {
 
     private fun createEntityType(): BlockEntityType<EndersortEntity> {
         return BlockEntityType.Builder.of({ pos, state -> EndersortEntity(pos, state) }, ENDERSORT_BLOCK)
-            .build(null).also {
-                it.setRegistryName("$MODID:endersort")
-            }
+            .build(null)
     }
 
 
