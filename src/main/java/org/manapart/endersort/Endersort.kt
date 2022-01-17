@@ -13,6 +13,7 @@ object Endersort {
     init {
         ModBlocks.REGISTRY.register(MOD_BUS)
         ModItems.REGISTRY.register(MOD_BUS)
+        ModEntities.REGISTRY.register(MOD_BUS)
     }
 
 

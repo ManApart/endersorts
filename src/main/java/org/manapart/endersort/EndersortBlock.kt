@@ -87,7 +87,6 @@ class EndersortBlock : ChestBlock(createProps(), Supplier { BlockEntityType(null
 //        }
     }
 
-    @OnlyIn(Dist.CLIENT)
     override fun animateTick(p_180655_1_: BlockState, world: Level, pos: BlockPos, rand: Random) {
         for (i in 0..2) {
             val j = rand.nextInt(2) * 2 - 1
