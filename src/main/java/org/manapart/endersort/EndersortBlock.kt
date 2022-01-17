@@ -23,6 +23,7 @@ import net.minecraft.world.level.material.MaterialColor
 import net.minecraft.world.phys.BlockHitResult
 import net.minecraftforge.api.distmarker.Dist
 import net.minecraftforge.api.distmarker.OnlyIn
+import org.manapart.endersort.ModEntities.ENDERSORT_BLOCK_ENTITY
 import java.util.*
 import java.util.function.Supplier
 
@@ -34,10 +35,6 @@ private fun createProps(): BlockBehaviour.Properties {
     props.strength(4f)
     return props
 }
-
-//internal class EndersortProvider() : Supplier<BlockEntityType<EndersortEntity>> {
-//    override fun get(): TeleporterNetwork = TeleporterNetwork(world)
-//}
 
 class EndersortBlock : ChestBlock(createProps(), Supplier { BlockEntityType(null, setOf(), null) }) {
     override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity = EndersortEntity(pos, state)
@@ -70,21 +67,13 @@ class EndersortBlock : ChestBlock(createProps(), Supplier { BlockEntityType(null
         return if (world.isClientSide) {
             super.getTicker(world, state, type)
         } else {
-            createTickerHelper(type, blockEntityType(), EndersortEntity::sortItems)
+            createTickerHelper(type, ENDERSORT_BLOCK_ENTITY, EndersortEntity::sortItems)
         }
     }
 
     //Chest combine was throwing a null pointer. This hopefully tells the combiner that these chests are always just 1, no double chests
     override fun combine(p_225536_1_: BlockState, world: Level, pos: BlockPos, p_225536_4_: Boolean): DoubleBlockCombiner.NeighborCombineResult<ChestBlockEntity> {
         return DoubleBlockCombiner.NeighborCombineResult.Single(world.getBlockEntity(pos) as ChestBlockEntity)
-    }
-
-    override fun tick(state: BlockState, world: ServerLevel, pos: BlockPos, p_153062_: Random) {
-        val blockEntity = world.getBlockEntity(pos)!!
-//        if (blockEntity is EndersortEntity) {
-//            blockEntity.tickInternal()
-//            blockEntity.recheckOpen()
-//        }
     }
 
     override fun animateTick(p_180655_1_: BlockState, world: Level, pos: BlockPos, rand: Random) {
