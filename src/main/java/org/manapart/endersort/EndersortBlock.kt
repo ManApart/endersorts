@@ -35,14 +35,18 @@ private fun createProps(): BlockBehaviour.Properties {
     return props
 }
 
-class EndersortBlock : ChestBlock(createProps(), Supplier { null }) {
+//internal class EndersortProvider() : Supplier<BlockEntityType<EndersortEntity>> {
+//    override fun get(): TeleporterNetwork = TeleporterNetwork(world)
+//}
+
+class EndersortBlock : ChestBlock(createProps(), Supplier { BlockEntityType(null, setOf(), null) }) {
     override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity = EndersortEntity(pos, state)
 
     override fun use(state: BlockState, world: Level, pos: BlockPos, player: Player, hand: InteractionHand, rayTraceResult: BlockHitResult): InteractionResult {
         if (!world.isClientSide) {
-            val tileentity = world.getBlockEntity(pos)
-            if (tileentity is EndersortEntity) {
-                player.openMenu(tileentity as EndersortEntity?)
+            val tileEntity = world.getBlockEntity(pos)
+            if (tileEntity is EndersortEntity) {
+                player.openMenu(tileEntity as EndersortEntity?)
                 player.awardStat(Stats.INSPECT_HOPPER)
                 world.playSound(null, pos, SoundEvents.ENDER_CHEST_OPEN, SoundSource.PLAYERS, 1f, 1f)
             }

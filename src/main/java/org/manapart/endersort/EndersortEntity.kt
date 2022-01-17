@@ -24,7 +24,7 @@ class EndersortEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(pos, 
     private var distributedItems = false
     private val storageHints: MutableMap<ResourceLocation, BlockPos> = mutableMapOf()
 
-    override fun getType(): BlockEntityType<*> = Endersort.tileType
+    override fun getType(): BlockEntityType<*> = ModEntities.tileType
     override fun getName(): MutableComponent = TextComponent("")
 
     override fun getDefaultName(): TextComponent = TextComponent("Endersort")
