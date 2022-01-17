@@ -6,17 +6,14 @@ import thedarkcolour.kotlinforforge.forge.registerObject
 
 object ModBlocks {
 
-    val endersortBlock = EndersortBlock()
-    val enderExtenderBlock = EnderExtenderBlock()
-
     val REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID)
 
     val ENDERSORT_BLOCK by REGISTRY.registerObject("endersort_block") {
-        endersortBlock
+        EndersortBlock()
     }
 
     val ENDER_EXTENDER_BLOCK by REGISTRY.registerObject("ender_extender_block") {
-        enderExtenderBlock
+        EnderExtenderBlock()
     }
 
 

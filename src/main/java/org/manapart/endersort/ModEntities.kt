@@ -3,8 +3,7 @@ package org.manapart.endersort
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraftforge.registries.DeferredRegister
 import net.minecraftforge.registries.ForgeRegistries
-import org.manapart.endersort.ModBlocks.enderExtenderBlock
-import org.manapart.endersort.ModBlocks.endersortBlock
+import org.manapart.endersort.ModBlocks.ENDERSORT_BLOCK
 import thedarkcolour.kotlinforforge.forge.registerObject
 
 object ModEntities {
@@ -18,7 +17,7 @@ object ModEntities {
     }
 
     private fun createEntityType(): BlockEntityType<EndersortEntity> {
-        return BlockEntityType.Builder.of({ pos, state -> EndersortEntity(pos, state) }, endersortBlock)
+        return BlockEntityType.Builder.of({ pos, state -> EndersortEntity(pos, state) }, ENDERSORT_BLOCK)
             .build(null).also {
                 it.setRegistryName("$MODID:endersort")
             }
