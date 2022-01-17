@@ -8,12 +8,10 @@ import thedarkcolour.kotlinforforge.forge.registerObject
 
 object ModEntities {
 
-    val tileType = createEntityType()
-
     val REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, MODID)
 
     val ENDERSORT_BLOCK_ENTITY by REGISTRY.registerObject("endersort") {
-        tileType
+        createEntityType()
     }
 
     private fun createEntityType(): BlockEntityType<EndersortEntity> {
