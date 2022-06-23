@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerLevel
 import net.minecraft.sounds.SoundEvents
 import net.minecraft.sounds.SoundSource
 import net.minecraft.stats.Stats
+import net.minecraft.util.RandomSource
 import net.minecraft.world.Containers.dropContents
 import net.minecraft.world.InteractionHand
 import net.minecraft.world.InteractionResult
@@ -76,7 +77,7 @@ class EndersortBlock : ChestBlock(createProps(), Supplier { BlockEntityType(null
         return DoubleBlockCombiner.NeighborCombineResult.Single(world.getBlockEntity(pos) as ChestBlockEntity)
     }
 
-    override fun animateTick(p_180655_1_: BlockState, world: Level, pos: BlockPos, rand: Random) {
+    override fun animateTick(p_220827_: BlockState, world: Level, pos: BlockPos, rand: RandomSource) {
         for (i in 0..2) {
             val j = rand.nextInt(2) * 2 - 1
             val k = rand.nextInt(2) * 2 - 1

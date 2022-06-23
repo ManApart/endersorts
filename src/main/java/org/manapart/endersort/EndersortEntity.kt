@@ -1,9 +1,8 @@
 package org.manapart.endersort
 
 import net.minecraft.core.BlockPos
+import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
-import net.minecraft.network.chat.TextComponent
-import net.minecraft.resources.ResourceLocation
 import net.minecraft.sounds.SoundEvents
 import net.minecraft.sounds.SoundSource
 import net.minecraft.world.CompoundContainer
@@ -22,12 +21,12 @@ class EndersortEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(pos, 
     private val chestFinder = ChestFinder()
     private var containerIndex = -1
     private var distributedItems = false
-    private val storageHints: MutableMap<ResourceLocation, BlockPos> = mutableMapOf()
+    private val storageHints: MutableMap<String, BlockPos> = mutableMapOf()
 
     override fun getType(): BlockEntityType<*> = ModEntities.ENDERSORT_BLOCK_ENTITY
-    override fun getName(): MutableComponent = TextComponent("")
+    override fun getName(): MutableComponent = Component.literal("")
 
-    override fun getDefaultName(): TextComponent = TextComponent("Endersort")
+    override fun getDefaultName(): Component = Component.literal("Endersort")
 
     companion object {
         fun sortItems(world: Level?, pos: BlockPos?, state: BlockState?, entity: ChestBlockEntity) {
@@ -60,7 +59,7 @@ class EndersortEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(pos, 
         if (storageHints.isNotEmpty()) {
             for (item in items) {
                 if (!item.isEmpty) {
-                    val matchName = item.item.registryName
+                    val matchName = item.item.descriptionId
                     val pos = storageHints[matchName]
                     if (pos != null) {
                         val chest = HopperBlockEntity.getContainerAt(getLevel()!!, pos)
@@ -108,19 +107,19 @@ class EndersortEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(pos, 
         }
     }
 
-    private fun buildMatchMap(chest: Container): Set<ResourceLocation?> {
-        val matches: MutableSet<ResourceLocation?> = HashSet()
+    private fun buildMatchMap(chest: Container): Set<String> {
+        val matches: MutableSet<String> = HashSet()
         for (i in 0 until chest.containerSize) {
             val destItem = chest.getItem(i)
             if (!destItem.isEmpty) {
-                matches.add(destItem.item.registryName)
+                matches.add(destItem.item.descriptionId)
             }
         }
         return matches
     }
 
-    private fun attemptToPush(item: ItemStack, destinationInventory: Container, matches: Set<ResourceLocation?>, pos: BlockPos) {
-        val matchName: ResourceLocation = item.item.registryName!!
+    private fun attemptToPush(item: ItemStack, destinationInventory: Container, matches: Set<String>, pos: BlockPos) {
+        val matchName: String = item.item.descriptionId
         if (!item.isEmpty && matches.contains(matchName)) {
             //Try to combine stacks first, then try full items
             pushStackable(item, destinationInventory, matchName)
@@ -134,11 +133,11 @@ class EndersortEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(pos, 
         }
     }
 
-    private fun pushStackable(item: ItemStack, destinationInventory: Container, matchName: ResourceLocation?) {
+    private fun pushStackable(item: ItemStack, destinationInventory: Container, matchName: String) {
         if (item.isStackable) {
             for (i in 0 until destinationInventory.containerSize) {
                 val destItem = destinationInventory.getItem(i)
-                if (destItem.isStackable && matchName == destItem.item.registryName) {
+                if (destItem.isStackable && matchName == destItem.item.descriptionId) {
                     val itemCount = min(destItem.maxStackSize - destItem.count, item.count)
                     if (itemCount > 0) {
                         destItem.count = destItem.count + itemCount

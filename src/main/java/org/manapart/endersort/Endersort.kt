@@ -20,9 +20,7 @@ object Endersort {
     val endersortIcon by lazy { createIcon() }
 
     private fun createIcon(): Item {
-        return Item(Item.Properties()).also {
-            it.setRegistryName("$MODID:es_icon")
-        }
+        return Item(Item.Properties())
     }
 
 
