@@ -1,7 +1,6 @@
 package org.manapart.endersort
 
 import net.minecraft.world.item.Item
-import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraftforge.fml.common.Mod
 import thedarkcolour.kotlinforforge.forge.MOD_BUS
 
@@ -17,11 +16,6 @@ object Endersort {
     }
 
 
-    val endersortIcon by lazy { createIcon() }
-
-    private fun createIcon(): Item {
-        return Item(Item.Properties())
-    }
-
+    val icon by lazy { Item(Item.Properties()) }
 
 }
