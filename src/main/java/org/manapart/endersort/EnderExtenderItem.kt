@@ -4,4 +4,4 @@ import net.minecraft.world.item.BlockItem
 import net.minecraft.world.item.CreativeModeTab
 
 
-class EnderExtenderItem(block: EnderExtenderBlock) : BlockItem(block, Properties().tab(CreativeModeTab.TAB_MISC))
+class EnderExtenderItem(block: EnderExtenderBlock) : BlockItem(block, Properties())
