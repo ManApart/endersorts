@@ -8,7 +8,8 @@ fun createEndersortProps(): BlockBehaviour.Properties {
     val props = BlockBehaviour.Properties.of()
     props.requiresCorrectToolForDrops()
     props.sound(SoundType.METAL)
-    props.strength(4f)
+    props.strength(1f)
+//    props.strength(4f)
     return props
 }
 class EndersortBlock : EndRodBlock(createEndersortProps())
