@@ -1,4 +1,4 @@
-package org.manapart.endersort
+package org.manapart.endersorts
 
 import net.minecraft.world.level.block.EndRodBlock
 import net.minecraft.world.level.block.SoundType
