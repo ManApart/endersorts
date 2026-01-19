@@ -15,13 +15,13 @@ import net.minecraft.world.level.block.state.BlockBehaviour
 object ModBlocks {
     fun initialize(){}
 
-    val ENDERSORT_BLOCK = register("endersort_block", createEndersortProps()) {
+    val ENDERSORT_BLOCK = register("endersort", createEndersortProps()) {
         Block(it)
     }
 
-    val ENDER_EXTENDER_BLOCK = register("ender_extender_block", BlockBehaviour.Properties.of().sound(SoundType.METAL)) {
-        Block(it)
-    }
+//    val ENDER_EXTENDER_BLOCK = register("ender_extender", BlockBehaviour.Properties.of().sound(SoundType.METAL)) {
+//        Block(it)
+//    }
 
     private fun register(name: String, settings: BlockBehaviour.Properties = BlockBehaviour.Properties.of(), shouldRegisterItem: Boolean = true, blockFactory: (BlockBehaviour.Properties) -> Block): Block {
         val blockKey: ResourceKey<Block> = keyOfBlock(name)

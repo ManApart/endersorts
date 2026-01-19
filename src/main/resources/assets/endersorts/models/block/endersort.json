@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "endersorts:block/endersort_top",
+    "down": "endersorts:block/endersort_bottom",
+    "up": "endersorts:block/endersort_top",
+    "north": "endersorts:block/endersort_side",
+    "east": "endersorts:block/endersort_side",
+    "south": "endersorts:block/endersort_side",
+    "west": "endersorts:block/endersort_side"
+  }
+}

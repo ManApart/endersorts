@@ -1,8 +1,9 @@
 {
-  "parent": "block/cube_all",
+  "parent": "minecraft:block/cube_all",
   "textures": {
-    "end_rod": "endersort:block/ender_extender",
-    "particle": "endersort:block/ender_extender"
+    "all": "endersorts:block/ender_extender",
+    "end_rod": "endersorts:block/ender_extender",
+    "particle": "endersorts:block/ender_extender"
   },
   "display": {
     "head": {

@@ -8,7 +8,7 @@ import net.minecraft.world.item.CreativeModeTabs
 import net.minecraft.world.item.Item
 
 
-const val MODID = "endersort"
+const val MODID = "endersorts"
 
 object Endersort : ModInitializer{
     val icon by lazy { Item(Item.Properties()) }
