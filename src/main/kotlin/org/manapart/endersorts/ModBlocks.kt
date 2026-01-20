@@ -11,7 +11,8 @@ import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.state.BlockBehaviour
 
-val endersortBlockId = "endersort"
+const val endersortBlockId = "endersort"
+const val enderExtenderBlockId = "ender_extender"
 
 object ModBlocks {
     fun initialize() {}
@@ -20,9 +21,10 @@ object ModBlocks {
         Block(it)
     }
 
-//    val ENDER_EXTENDER_BLOCK = register("ender_extender", BlockBehaviour.Properties.of().sound(SoundType.METAL)) {
+    val ENDER_EXTENDER_BLOCK = register(enderExtenderBlockId, createExtenderProps(), false) {
+        EnderExtenderBlock(it)
 //        Block(it)
-//    }
+    }
 
     private fun register(
         name: String,

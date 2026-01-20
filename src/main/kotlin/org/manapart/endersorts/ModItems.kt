@@ -21,11 +21,10 @@ object ModItems {
     }
 
     val ENDERSORT_ITEM = register(endersortBlockId) {
-//        EndersortItem(ModBlocks.ENDERSORT_BLOCK)
         BlockItem(ModBlocks.ENDERSORT_BLOCK, it)
     }
-//
-//    val ENDER_EXTENDER_ITEM = register("ender_extender_item") {
-//        EnderExtenderItem(ModBlocks.ENDER_EXTENDER_BLOCK)
-//    }
+
+    val ENDER_EXTENDER_ITEM = register(enderExtenderBlockId) {
+        BlockItem(ModBlocks.ENDER_EXTENDER_BLOCK, it)
+    }
 }

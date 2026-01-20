@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "endersorts:endersort"
+    "endersorts:endersort",
+    "endersorts:ender_extender"
   ]
 }

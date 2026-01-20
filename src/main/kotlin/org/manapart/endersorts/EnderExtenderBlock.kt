@@ -5,11 +5,11 @@ import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.state.BlockBehaviour
 
 
-class EnderExtenderBlock : EndRodBlock(createProps())
+class EnderExtenderBlock(props: Properties) : EndRodBlock(props)
 
-private fun createProps(): BlockBehaviour.Properties {
+fun createExtenderProps(): BlockBehaviour.Properties {
     return BlockBehaviour.Properties.of().apply {
-//    requiresCorrectToolForDrops()
+        requiresCorrectToolForDrops()
         sound(SoundType.METAL)
         strength(4f)
     }
