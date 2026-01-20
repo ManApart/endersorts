@@ -20,7 +20,7 @@ object ModItems {
         return item
     }
 
-    val ENDERSORT_ITEM = register("endersort") {
+    val ENDERSORT_ITEM = register(endersortBlockId) {
 //        EndersortItem(ModBlocks.ENDERSORT_BLOCK)
         BlockItem(ModBlocks.ENDERSORT_BLOCK, it)
     }

@@ -11,11 +11,12 @@ import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.state.BlockBehaviour
 
+val endersortBlockId = "endersort"
 
 object ModBlocks {
     fun initialize() {}
 
-    val ENDERSORT_BLOCK = register("endersort",  createEndersortProps(), false) {
+    val ENDERSORT_BLOCK = register(endersortBlockId,  createEndersortProps(), false) {
         Block(it)
     }
 

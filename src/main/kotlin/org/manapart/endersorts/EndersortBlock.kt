@@ -6,14 +6,12 @@ import net.minecraft.world.level.block.state.BlockBehaviour
 
 fun createEndersortProps(): BlockBehaviour.Properties {
     return BlockBehaviour.Properties.of().apply {
-//    requiresCorrectToolForDrops()
-    sound(SoundType.METAL)
-    strength(1f)
-//    overrideLootTable(Optional.of(Identifier.fromNamespaceAndPath(MODID, "blocks/endersort")))
-//    props.strength(4f)
-
+        requiresCorrectToolForDrops()
+        sound(SoundType.METAL)
+        strength(4f)
     }
 }
+
 class EndersortBlock : EndRodBlock(createEndersortProps())
 //class EndersortBlock : ChestBlock(createProps(), Supplier { BlockEntityType(null, setOf(), null) }) {
 //    override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity = EndersortEntity(pos, state)
