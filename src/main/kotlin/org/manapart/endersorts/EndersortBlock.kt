@@ -48,17 +48,6 @@ class EndersortBlock(props: Properties) : ChestBlock(Supplier { ENDERSORT_BLOCK_
         return InteractionResult.PASS
     }
 
-//    override fun onRemove(state: BlockState, world: Level, pos: BlockPos, newState: BlockState, isMoving: Boolean) {
-//        if (state.block !== newState.block) {
-//            val tileEntity = world.getBlockEntity(pos)
-//            if (tileEntity is EndersortEntity) {
-//                dropContents(world, pos, tileEntity)
-//            }
-//            super.onRemove(state, world, pos, newState, isMoving)
-//        }
-//    }
-//
-
     override fun <T : BlockEntity> getTicker(level: Level, state: BlockState, type: BlockEntityType<T>): BlockEntityTicker<T>? {
         return if (level.isClientSide) {
             super.getTicker(level, state, type)
