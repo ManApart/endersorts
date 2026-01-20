@@ -5,12 +5,14 @@ import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.state.BlockBehaviour
 
 fun createEndersortProps(): BlockBehaviour.Properties {
-    val props = BlockBehaviour.Properties.of()
-    props.requiresCorrectToolForDrops()
-    props.sound(SoundType.METAL)
-    props.strength(1f)
+    return BlockBehaviour.Properties.of().apply {
+//    requiresCorrectToolForDrops()
+    sound(SoundType.METAL)
+    strength(1f)
+//    overrideLootTable(Optional.of(Identifier.fromNamespaceAndPath(MODID, "blocks/endersort")))
 //    props.strength(4f)
-    return props
+
+    }
 }
 class EndersortBlock : EndRodBlock(createEndersortProps())
 //class EndersortBlock : ChestBlock(createProps(), Supplier { BlockEntityType(null, setOf(), null) }) {

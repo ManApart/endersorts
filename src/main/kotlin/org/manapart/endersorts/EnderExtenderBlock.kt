@@ -8,9 +8,9 @@ import net.minecraft.world.level.block.state.BlockBehaviour
 class EnderExtenderBlock : EndRodBlock(createProps())
 
 private fun createProps(): BlockBehaviour.Properties {
-    val props = BlockBehaviour.Properties.of()
-    props.requiresCorrectToolForDrops()
-    props.sound(SoundType.METAL)
-    props.strength(4f)
-    return props
+    return BlockBehaviour.Properties.of().apply {
+//    requiresCorrectToolForDrops()
+        sound(SoundType.METAL)
+        strength(4f)
+    }
 }

@@ -1,19 +1,20 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    " # ",
-    "#O#",
-    " # "
+    "###",
+    "#E#",
+    "###"
   ],
   "key": {
     "#": {
       "item": "minecraft:diamond"
     },
-    "O": {
-      "item": "minecraft:redstone_torch"
+    "E": {
+      "item": "minecraft:ender_pearl"
     }
   },
   "result": {
-    "item": "endersort:ender_extender_item"
+    "id": "endersorts:endersort",
+    "count": 1
   }
 }
