@@ -1,6 +1,5 @@
 package org.manapart.endersorts
 
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup.world
 import net.minecraft.core.BlockPos
 import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.sounds.SoundEvents
@@ -16,7 +15,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.entity.ChestBlockEntity
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.block.state.BlockState
-import net.minecraft.world.level.levelgen.SurfaceRules.state
 import org.manapart.endersorts.ModEntities.ENDERSORT_BLOCK_ENTITY
 import java.util.function.Supplier
 
@@ -28,8 +26,8 @@ fun createEndersortProps(): BlockBehaviour.Properties {
     }
 }
 
-class EndersortBlock(props: Properties) : ChestBlock(Supplier { ModEntities.ENDERSORT_BLOCK_ENTITY }, SoundEvents.CHEST_OPEN, SoundEvents.CHEST_CLOSE, props) {
-    override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity = EndersortBlockEntity(pos, state)
+class EndersortBlock(props: Properties) : ChestBlock(Supplier { ENDERSORT_BLOCK_ENTITY }, SoundEvents.CHEST_OPEN, SoundEvents.CHEST_CLOSE, props) {
+    override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity = EndersortEntity(pos, state)
 
 //    override fun use(state: BlockState, world: Level, pos: BlockPos, player: Player, hand: InteractionHand, rayTraceResult: BlockHitResult): InteractionResult {
 //        if (!world.isClientSide) {

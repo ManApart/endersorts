@@ -18,7 +18,7 @@ object ModBlocks {
     fun initialize() {}
 
     val ENDERSORT_BLOCK = register(endersortBlockId,  createEndersortProps(), false) {
-        Block(it)
+        EndersortBlock(it)
     }
 
     val ENDER_EXTENDER_BLOCK = register(enderExtenderBlockId, createExtenderProps(), false) {

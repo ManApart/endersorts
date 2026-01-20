@@ -1,20 +1,17 @@
 package org.manapart.endersorts
 
 import net.fabricmc.fabric.api.`object`.builder.v1.block.entity.FabricBlockEntityTypeBuilder
-import net.minecraft.core.BlockPos
 import net.minecraft.core.Registry
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.resources.Identifier
 import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
-import net.minecraft.world.level.block.state.BlockState
-import net.minecraft.world.level.block.entity.ChestBlockEntity
 
 object ModEntities {
-
-    val ENDERSORT_BLOCK_ENTITY = register<EndersortBlockEntity>("endersort", ModBlocks.ENDERSORT_BLOCK) { pos, state ->
-        EndersortBlockEntity(pos, state)
+    fun initialize() {}
+    val ENDERSORT_BLOCK_ENTITY = register<EndersortEntity>("endersort", ModBlocks.ENDERSORT_BLOCK) { pos, state ->
+        EndersortEntity(pos, state)
     }
 
     private fun <T : BlockEntity> register(
@@ -26,5 +23,3 @@ object ModEntities {
         return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, id, FabricBlockEntityTypeBuilder.create(entityFactory, block).build())
     }
 }
-
-class EndersortBlockEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(ModEntities.ENDERSORT_BLOCK_ENTITY, pos, state)

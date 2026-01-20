@@ -16,6 +16,7 @@ object Endersort : ModInitializer{
     val icon by lazy { Item(Item.Properties()) }
 
     override fun onInitialize() {
+        ModEntities.initialize()
         ModBlocks.initialize()
         ModItems.initialize()
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(ModifyEntries { itemGroup: FabricItemGroupEntries ->

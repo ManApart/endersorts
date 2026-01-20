@@ -4,8 +4,9 @@ import net.minecraft.core.BlockPos
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.entity.ChestBlockEntity
 import net.minecraft.world.level.block.state.BlockState
+import org.manapart.endersorts.ModEntities.ENDERSORT_BLOCK_ENTITY
 
-class EndersortEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(pos, state) {
+class EndersortEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(ENDERSORT_BLOCK_ENTITY, pos, state) {
     companion object {
         fun sortItems(world: Level?, pos: BlockPos?, state: BlockState?, entity: ChestBlockEntity) {
             (entity as EndersortEntity).tickInternal()
@@ -31,7 +32,6 @@ class EndersortEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(pos, 
 //    }
 //
     fun tickInternal() {
-        println("Ticking")
 
 //        --transferCooldown
 //        if (transferCooldown <= 0 && !this.isEmpty) {
