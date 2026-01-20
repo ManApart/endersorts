@@ -1,4 +1,6 @@
 {
   "block.endersorts.endersort": "Endersort",
-  "block.endersorts.ender_extender": "Ender Extender"
+  "block.endersorts.ender_extender": "Ender Extender",
+  "item.endersorts.endersort": "Endersort",
+  "item.endersorts.ender_extender": "Ender Extender"
 }

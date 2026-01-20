@@ -13,9 +13,9 @@ import net.minecraft.world.level.block.state.BlockBehaviour
 
 
 object ModBlocks {
-    fun initialize(){}
+    fun initialize() {}
 
-    val ENDERSORT_BLOCK = register("endersort", createEndersortProps()) {
+    val ENDERSORT_BLOCK = register("endersort",  createEndersortProps(), false) {
         Block(it)
     }
 
@@ -23,7 +23,12 @@ object ModBlocks {
 //        Block(it)
 //    }
 
-    private fun register(name: String, settings: BlockBehaviour.Properties = BlockBehaviour.Properties.of(), shouldRegisterItem: Boolean = true, blockFactory: (BlockBehaviour.Properties) -> Block): Block {
+    private fun register(
+        name: String,
+        settings: BlockBehaviour.Properties = BlockBehaviour.Properties.of(),
+        shouldRegisterItem: Boolean = true,
+        blockFactory: (BlockBehaviour.Properties) -> Block
+    ): Block {
         val blockKey: ResourceKey<Block> = keyOfBlock(name)
         val block: Block = blockFactory(settings.setId(blockKey))
 
