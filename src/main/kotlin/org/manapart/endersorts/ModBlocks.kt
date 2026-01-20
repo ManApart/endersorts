@@ -23,7 +23,6 @@ object ModBlocks {
 
     val ENDER_EXTENDER_BLOCK = register(enderExtenderBlockId, createExtenderProps(), false) {
         EnderExtenderBlock(it)
-//        Block(it)
     }
 
     private fun register(

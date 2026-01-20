@@ -6,14 +6,11 @@
     " # "
   ],
   "key": {
-    "#": {
-      "item": "minecraft:diamond"
-    },
-    "O": {
-      "item": "minecraft:redstone_torch"
-    }
+    "#": "minecraft:diamond",
+    "O": "minecraft:redstone_torch"
   },
   "result": {
-    "item": "endersorts:ender_extender"
+    "id": "endersorts:ender_extender",
+    "count": 1
   }
 }

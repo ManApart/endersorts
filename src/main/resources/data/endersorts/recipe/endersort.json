@@ -6,12 +6,8 @@
     "###"
   ],
   "key": {
-    "#": {
-      "item": "minecraft:diamond"
-    },
-    "E": {
-      "item": "minecraft:ender_pearl"
-    }
+    "#": "minecraft:diamond",
+    "E": "minecraft:ender_pearl"
   },
   "result": {
     "id": "endersorts:endersort",
