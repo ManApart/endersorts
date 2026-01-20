@@ -1,7 +1,18 @@
 package org.manapart.endersorts
 
-//class EndersortEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(pos, state) {
-//    private var transferCooldown = -1
+import net.minecraft.core.BlockPos
+import net.minecraft.world.level.Level
+import net.minecraft.world.level.block.entity.ChestBlockEntity
+import net.minecraft.world.level.block.state.BlockState
+
+class EndersortEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(pos, state) {
+    companion object {
+        fun sortItems(world: Level?, pos: BlockPos?, state: BlockState?, entity: ChestBlockEntity) {
+            (entity as EndersortEntity).tickInternal()
+        }
+    }
+
+    //    private var transferCooldown = -1
 //    private val cooldownBuffer = 5
 //    private val chestFinder = ChestFinder()
 //    private var containerIndex = -1
@@ -19,7 +30,9 @@ package org.manapart.endersorts
 //        }
 //    }
 //
-//    fun tickInternal() {
+    fun tickInternal() {
+        println("Ticking")
+
 //        --transferCooldown
 //        if (transferCooldown <= 0 && !this.isEmpty) {
 //            transferCooldown = cooldownBuffer
@@ -32,7 +45,7 @@ package org.manapart.endersorts
 //                chestFinder.resetSearch(worldPosition)
 //            }
 //        }
-//    }
+    }
 //
 //    private fun clearContainers() {
 //        chestFinder.resetSearch(worldPosition)
@@ -158,4 +171,4 @@ package org.manapart.endersorts
 //            }
 //        }
 //    }
-//}
+}

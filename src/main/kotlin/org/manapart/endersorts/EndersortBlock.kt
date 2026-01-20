@@ -1,5 +1,6 @@
 package org.manapart.endersorts
 
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup.world
 import net.minecraft.core.BlockPos
 import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.sounds.SoundEvents
@@ -10,9 +11,13 @@ import net.minecraft.world.level.block.DoubleBlockCombiner
 import net.minecraft.world.level.block.RenderShape
 import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.world.level.block.entity.BlockEntityTicker
+import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.entity.ChestBlockEntity
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.levelgen.SurfaceRules.state
+import org.manapart.endersorts.ModEntities.ENDERSORT_BLOCK_ENTITY
 import java.util.function.Supplier
 
 fun createEndersortProps(): BlockBehaviour.Properties {
@@ -48,14 +53,14 @@ class EndersortBlock(props: Properties) : ChestBlock(Supplier { ModEntities.ENDE
 //        }
 //    }
 //
-//    override fun <T : BlockEntity?> getTicker(world: Level, state: BlockState, type: BlockEntityType<T>): BlockEntityTicker<T>? {
-//        return if (world.isClientSide) {
-//            super.getTicker(world, state, type)
-//        } else {
-//            createTickerHelper(type, ENDERSORT_BLOCK_ENTITY, EndersortEntity::sortItems)
-//        }
-//    }
 
+    override fun <T : BlockEntity> getTicker(level: Level, state: BlockState, type: BlockEntityType<T>): BlockEntityTicker<T>? {
+        return if (level.isClientSide) {
+            super.getTicker(level, state, type)
+        } else {
+            createTickerHelper(type, ENDERSORT_BLOCK_ENTITY, EndersortEntity::sortItems)
+        }
+    }
 
     override fun getRenderShape(blockState: BlockState) = RenderShape.MODEL
 
