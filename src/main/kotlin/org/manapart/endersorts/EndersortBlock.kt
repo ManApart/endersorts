@@ -1,8 +1,25 @@
 package org.manapart.endersorts
 
+import net.minecraft.core.BlockPos
+import net.minecraft.core.particles.ParticleTypes
+import net.minecraft.sounds.SoundEvents
+import net.minecraft.sounds.SoundSource
+import net.minecraft.util.RandomSource
+import net.minecraft.world.Containers.dropContents
+import net.minecraft.world.InteractionHand
+import net.minecraft.world.InteractionResult
+import net.minecraft.world.level.block.ChestBlock
+import net.minecraft.world.level.block.DoubleBlockCombiner
 import net.minecraft.world.level.block.EndRodBlock
+import net.minecraft.world.level.block.RenderShape
 import net.minecraft.world.level.block.SoundType
+import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.world.level.block.entity.BlockEntityTicker
+import net.minecraft.world.level.block.entity.BlockEntityType
+import net.minecraft.world.level.block.entity.ChestBlockEntity
 import net.minecraft.world.level.block.state.BlockBehaviour
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.phys.BlockHitResult
 
 fun createEndersortProps(): BlockBehaviour.Properties {
     return BlockBehaviour.Properties.of().apply {
@@ -12,10 +29,10 @@ fun createEndersortProps(): BlockBehaviour.Properties {
     }
 }
 
-class EndersortBlock : EndRodBlock(createEndersortProps())
-//class EndersortBlock : ChestBlock(createProps(), Supplier { BlockEntityType(null, setOf(), null) }) {
-//    override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity = EndersortEntity(pos, state)
-//
+//class EndersortBlock : EndRodBlock(createEndersortProps())
+class EndersortBlock(props: Properties) : ChestBlock(props, Supplier { BlockEntityType(null, setOf(), null) }) {
+    override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity = EndersortEntity(pos, state)
+
 //    override fun use(state: BlockState, world: Level, pos: BlockPos, player: Player, hand: InteractionHand, rayTraceResult: BlockHitResult): InteractionResult {
 //        if (!world.isClientSide) {
 //            val tileEntity = world.getBlockEntity(pos)
@@ -66,5 +83,5 @@ class EndersortBlock : EndRodBlock(createEndersortProps())
 //            world.addParticle(ParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5)
 //        }
 //    }
-//
-//}
+
+}

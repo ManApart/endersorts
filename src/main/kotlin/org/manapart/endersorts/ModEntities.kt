@@ -1,17 +1,30 @@
 package org.manapart.endersorts
 
+import net.fabricmc.fabric.api.`object`.builder.v1.block.entity.FabricBlockEntityTypeBuilder
+import net.minecraft.core.BlockPos
+import net.minecraft.core.Registry
+import net.minecraft.core.registries.BuiltInRegistries
+import net.minecraft.resources.Identifier
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.entity.BlockEntity
+import net.minecraft.world.level.block.entity.BlockEntityType
+import net.minecraft.world.level.block.state.BlockState
+
+
 object ModEntities {
 
-//    val REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, MODID)
-//
-//    val ENDERSORT_BLOCK_ENTITY by REGISTRY.registerObject("endersort") {
-//        createEntityType()
-//    }
-//
-//    private fun createEntityType(): BlockEntityType<EndersortEntity> {
-//        return BlockEntityType.Builder.of({ pos, state -> EndersortEntity(pos, state) }, ENDERSORT_BLOCK)
-//            .build(null)
-//    }
+    val ENDERSORT_BLOCK_ENTITY = register<EndersortBlockEntity>("endersort", ModBlocks.ENDERSORT_BLOCK) { pos, state ->
+        EndersortBlockEntity(pos, state)
+    }
 
-
+    private fun <T : BlockEntity> register(
+        name: String,
+        block: Block,
+        entityFactory: FabricBlockEntityTypeBuilder.Factory<out T>,
+    ): BlockEntityType<T> {
+        val id: Identifier = Identifier.fromNamespaceAndPath(MODID, name)
+        return Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, id, FabricBlockEntityTypeBuilder.create(entityFactory, block).build())
+    }
 }
+
+class EndersortBlockEntity(pos: BlockPos, state: BlockState) : BlockEntity(ModEntities.ENDERSORT_BLOCK_ENTITY, pos, state)
