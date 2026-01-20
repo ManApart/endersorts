@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.Block
 import net.minecraft.world.level.block.entity.BlockEntity
 import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.state.BlockState
-
+import net.minecraft.world.level.block.entity.ChestBlockEntity
 
 object ModEntities {
 
@@ -27,4 +27,4 @@ object ModEntities {
     }
 }
 
-class EndersortBlockEntity(pos: BlockPos, state: BlockState) : BlockEntity(ModEntities.ENDERSORT_BLOCK_ENTITY, pos, state)
+class EndersortBlockEntity(pos: BlockPos, state: BlockState) : ChestBlockEntity(ModEntities.ENDERSORT_BLOCK_ENTITY, pos, state)

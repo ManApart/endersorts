@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.phys.BlockHitResult
+import java.util.function.Supplier
 
 fun createEndersortProps(): BlockBehaviour.Properties {
     return BlockBehaviour.Properties.of().apply {
@@ -30,8 +31,9 @@ fun createEndersortProps(): BlockBehaviour.Properties {
 }
 
 //class EndersortBlock : EndRodBlock(createEndersortProps())
-class EndersortBlock(props: Properties) : ChestBlock(props, Supplier { BlockEntityType(null, setOf(), null) }) {
-    override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity = EndersortEntity(pos, state)
+//class EndersortBlock(props: Properties) : ChestBlock(props, Supplier { BlockEntityType(null, setOf(), null) }) {
+class EndersortBlock(props: Properties) : ChestBlock(Supplier { ModEntities.ENDERSORT_BLOCK_ENTITY }, SoundEvents.CHEST_OPEN, SoundEvents.CHEST_CLOSE, props) {
+    override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity = EndersortBlockEntity(pos, state)
 
 //    override fun use(state: BlockState, world: Level, pos: BlockPos, player: Player, hand: InteractionHand, rayTraceResult: BlockHitResult): InteractionResult {
 //        if (!world.isClientSide) {
