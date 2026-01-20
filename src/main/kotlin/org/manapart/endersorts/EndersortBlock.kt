@@ -3,23 +3,16 @@ package org.manapart.endersorts
 import net.minecraft.core.BlockPos
 import net.minecraft.core.particles.ParticleTypes
 import net.minecraft.sounds.SoundEvents
-import net.minecraft.sounds.SoundSource
 import net.minecraft.util.RandomSource
-import net.minecraft.world.Containers.dropContents
-import net.minecraft.world.InteractionHand
-import net.minecraft.world.InteractionResult
+import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.ChestBlock
 import net.minecraft.world.level.block.DoubleBlockCombiner
-import net.minecraft.world.level.block.EndRodBlock
 import net.minecraft.world.level.block.RenderShape
 import net.minecraft.world.level.block.SoundType
 import net.minecraft.world.level.block.entity.BlockEntity
-import net.minecraft.world.level.block.entity.BlockEntityTicker
-import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.entity.ChestBlockEntity
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.block.state.BlockState
-import net.minecraft.world.phys.BlockHitResult
 import java.util.function.Supplier
 
 fun createEndersortProps(): BlockBehaviour.Properties {
@@ -30,8 +23,6 @@ fun createEndersortProps(): BlockBehaviour.Properties {
     }
 }
 
-//class EndersortBlock : EndRodBlock(createEndersortProps())
-//class EndersortBlock(props: Properties) : ChestBlock(props, Supplier { BlockEntityType(null, setOf(), null) }) {
 class EndersortBlock(props: Properties) : ChestBlock(Supplier { ModEntities.ENDERSORT_BLOCK_ENTITY }, SoundEvents.CHEST_OPEN, SoundEvents.CHEST_CLOSE, props) {
     override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity = EndersortBlockEntity(pos, state)
 
@@ -57,8 +48,6 @@ class EndersortBlock(props: Properties) : ChestBlock(Supplier { ModEntities.ENDE
 //        }
 //    }
 //
-//    override fun getRenderShape(p_149645_1_: BlockState): RenderShape = RenderShape.MODEL
-//
 //    override fun <T : BlockEntity?> getTicker(world: Level, state: BlockState, type: BlockEntityType<T>): BlockEntityTicker<T>? {
 //        return if (world.isClientSide) {
 //            super.getTicker(world, state, type)
@@ -66,24 +55,24 @@ class EndersortBlock(props: Properties) : ChestBlock(Supplier { ModEntities.ENDE
 //            createTickerHelper(type, ENDERSORT_BLOCK_ENTITY, EndersortEntity::sortItems)
 //        }
 //    }
-//
-//    //Chest combine was throwing a null pointer. This hopefully tells the combiner that these chests are always just 1, no double chests
-//    override fun combine(p_225536_1_: BlockState, world: Level, pos: BlockPos, p_225536_4_: Boolean): DoubleBlockCombiner.NeighborCombineResult<ChestBlockEntity> {
-//        return DoubleBlockCombiner.NeighborCombineResult.Single(world.getBlockEntity(pos) as ChestBlockEntity)
-//    }
-//
-//    override fun animateTick(p_220827_: BlockState, world: Level, pos: BlockPos, rand: RandomSource) {
-//        for (i in 0..2) {
-//            val j = rand.nextInt(2) * 2 - 1
-//            val k = rand.nextInt(2) * 2 - 1
-//            val d0 = pos.x.toDouble() + 0.5 + 0.25 * j.toDouble()
-//            val d1 = (pos.y.toFloat() + rand.nextFloat()).toDouble()
-//            val d2 = pos.z.toDouble() + 0.5 + 0.25 * k.toDouble()
-//            val d3 = (rand.nextFloat() * j.toFloat()).toDouble()
-//            val d4 = (rand.nextFloat().toDouble() - 0.5) * 0.125
-//            val d5 = (rand.nextFloat() * k.toFloat()).toDouble()
-//            world.addParticle(ParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5)
-//        }
-//    }
 
+
+    override fun getRenderShape(blockState: BlockState) = RenderShape.MODEL
+
+    override fun combine(blockState: BlockState, level: Level, pos: BlockPos, bl: Boolean) =
+        DoubleBlockCombiner.NeighborCombineResult.Single(level.getBlockEntity(pos) as ChestBlockEntity)
+
+    override fun animateTick(blockState: BlockState, level: Level, pos: BlockPos, rand: RandomSource) {
+        for (i in 0..2) {
+            val j = rand.nextInt(2) * 2 - 1
+            val k = rand.nextInt(2) * 2 - 1
+            val d0 = pos.x.toDouble() + 0.5 + 0.25 * j.toDouble()
+            val d1 = (pos.y.toFloat() + rand.nextFloat()).toDouble()
+            val d2 = pos.z.toDouble() + 0.5 + 0.25 * k.toDouble()
+            val d3 = (rand.nextFloat() * j.toFloat()).toDouble()
+            val d4 = (rand.nextFloat().toDouble() - 0.5) * 0.125
+            val d5 = (rand.nextFloat() * k.toFloat()).toDouble()
+            level.addParticle(ParticleTypes.PORTAL, d0, d1, d2, d3, d4, d5)
+        }
+    }
 }
