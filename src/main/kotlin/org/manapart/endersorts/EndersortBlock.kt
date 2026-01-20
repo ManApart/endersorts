@@ -2,8 +2,14 @@ package org.manapart.endersorts
 
 import net.minecraft.core.BlockPos
 import net.minecraft.core.particles.ParticleTypes
+import net.minecraft.server.level.ServerLevel
 import net.minecraft.sounds.SoundEvents
+import net.minecraft.sounds.SoundSource
+import net.minecraft.stats.Stats
 import net.minecraft.util.RandomSource
+import net.minecraft.world.InteractionResult
+import net.minecraft.world.entity.player.Player
+import net.minecraft.world.item.ItemStack
 import net.minecraft.world.level.Level
 import net.minecraft.world.level.block.ChestBlock
 import net.minecraft.world.level.block.DoubleBlockCombiner
@@ -15,6 +21,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType
 import net.minecraft.world.level.block.entity.ChestBlockEntity
 import net.minecraft.world.level.block.state.BlockBehaviour
 import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.phys.BlockHitResult
 import org.manapart.endersorts.ModEntities.ENDERSORT_BLOCK_ENTITY
 import java.util.function.Supplier
 
@@ -26,21 +33,21 @@ fun createEndersortProps(): BlockBehaviour.Properties {
     }
 }
 
-class EndersortBlock(props: Properties) : ChestBlock(Supplier { ENDERSORT_BLOCK_ENTITY }, SoundEvents.CHEST_OPEN, SoundEvents.CHEST_CLOSE, props) {
+class EndersortBlock(props: Properties) : ChestBlock(Supplier { ENDERSORT_BLOCK_ENTITY }, SoundEvents.ENDER_CHEST_OPEN, SoundEvents.ENDER_CHEST_CLOSE, props) {
     override fun newBlockEntity(pos: BlockPos, state: BlockState): BlockEntity = EndersortEntity(pos, state)
 
-//    override fun use(state: BlockState, world: Level, pos: BlockPos, player: Player, hand: InteractionHand, rayTraceResult: BlockHitResult): InteractionResult {
-//        if (!world.isClientSide) {
-//            val tileEntity = world.getBlockEntity(pos)
-//            if (tileEntity is EndersortEntity) {
-//                player.openMenu(tileEntity as EndersortEntity?)
-//                player.awardStat(Stats.INSPECT_HOPPER)
-//                world.playSound(null, pos, SoundEvents.ENDER_CHEST_OPEN, SoundSource.PLAYERS, 1f, 1f)
-//            }
-//        }
-//        return InteractionResult.PASS
-//    }
-//
+    override fun useWithoutItem(state: BlockState, level: Level, pos: BlockPos, player: Player, blockHitResult: BlockHitResult): InteractionResult {
+        if (!level.isClientSide) {
+            val tileEntity = level.getBlockEntity(pos)
+            if (tileEntity is EndersortEntity) {
+                player.openMenu(tileEntity as EndersortEntity?)
+                player.awardStat(Stats.INSPECT_HOPPER)
+                level.playSound(null, pos, SoundEvents.ENDER_CHEST_OPEN, SoundSource.PLAYERS, 1f, 1f)
+            }
+        }
+        return InteractionResult.PASS
+    }
+
 //    override fun onRemove(state: BlockState, world: Level, pos: BlockPos, newState: BlockState, isMoving: Boolean) {
 //        if (state.block !== newState.block) {
 //            val tileEntity = world.getBlockEntity(pos)
