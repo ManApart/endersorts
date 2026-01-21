@@ -12,7 +12,7 @@ import org.manapart.endersorts.ModItems.ENDER_EXTENDER_ITEM
 
 const val MODID = "endersorts"
 
-object Endersort : ModInitializer{
+object Endersort : ModInitializer {
     val icon by lazy { Item(Item.Properties()) }
 
     override fun onInitialize() {
@@ -20,8 +20,8 @@ object Endersort : ModInitializer{
         ModBlocks.initialize()
         ModItems.initialize()
         ItemGroupEvents.modifyEntriesEvent(CreativeModeTabs.REDSTONE_BLOCKS).register(ModifyEntries { itemGroup: FabricItemGroupEntries ->
-                itemGroup.accept(ENDERSORT_ITEM)
-                itemGroup.accept(ENDER_EXTENDER_ITEM)
+            itemGroup.accept(ENDERSORT_ITEM)
+            itemGroup.accept(ENDER_EXTENDER_ITEM)
         })
     }
 

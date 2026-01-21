@@ -17,18 +17,18 @@ const val enderExtenderBlockId = "ender_extender"
 object ModBlocks {
     fun initialize() {}
 
-    val ENDERSORT_BLOCK = register(endersortBlockId,  createEndersortProps(), false) {
+    val ENDERSORT_BLOCK = register(endersortBlockId,  createEndersortProps()) {
         EndersortBlock(it)
     }
 
-    val ENDER_EXTENDER_BLOCK = register(enderExtenderBlockId, createExtenderProps(), false) {
+    val ENDER_EXTENDER_BLOCK = register(enderExtenderBlockId, createExtenderProps()) {
         EnderExtenderBlock(it)
     }
 
     private fun register(
         name: String,
         settings: BlockBehaviour.Properties = BlockBehaviour.Properties.of(),
-        shouldRegisterItem: Boolean = true,
+        shouldRegisterItem: Boolean = false,
         blockFactory: (BlockBehaviour.Properties) -> Block
     ): Block {
         val blockKey: ResourceKey<Block> = keyOfBlock(name)
